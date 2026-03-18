@@ -1,95 +1,94 @@
-\begin[class=book]{document}
-\include[src=macros.sil]
-\define[command=silehp]{\url{http://www.sile-typesetter.org/}}
-\define[command=sileversion]{\lua{SILE.typesetter:typeset(SILE.full_version)}}
-% 设置行间距
-\set[parameter=document.baselineskip,value=3ex]
-% 断行算法中允许的额外伸展量为行宽的20%，目的是为了减少或消除过满的行（overfull lines）
-\set[parameter=linebreak.emergencyStretch,value=20%lw]
-% 启用了自动文档中的语法高亮功能(autodoc.highlighting)。
-\set[parameter=autodoc.highlighting, value=true]
-% 设置了文档使用的字体及其大小。
-\font[size=11pt,family=SimSun]
-% 命令用来指示SILE不要在页面底部显示页码（folios指的是页码）。
-\nofolios
-% 这两条命令设置了生成的PDF文件的元数据信息。
-\pdf:metadata[key=Title, value=The SILE Book]
-\pdf:metadata[key=Author, value=Simon Cozens]
+\begin[class=fduthesis, type=doctor, degree=academic]{document}
 
+% =========================================================================
+% 论文元数据设置
+% =========================================================================
 
-\begin{raggedleft}
-    \font[size=11pt,family=SimSun]
-    \begin[cols=20%fw 20%fw, cellborder=0]{ptable}
-        \begin{row}
-            \cell[border=0 0 0 0, halign=raggedleft]{学校代码：}
-            \cell[border=0 0 0 0, halign=raggedright]{10246}
-        \end{row}
-        \begin{row}
-            \cell[border=0 0 0 0, halign=raggedleft]{学\qquad号：}
-            \cell[border=0 0 0 0, halign=raggedright]{12300000000}
-        \end{row}
-    \end{ptable}
-\end{raggedleft}
+\fdu:schoolCode{10246}
+\fdu:studentId{12345678901}
+\fdu:title{基于深度学习的自然语言处理关键技术研究}
+\fdu:titleEn{Research on Key Technologies of Natural Language Processing Based on Deep Learning}
+\fdu:author{张三}
+\fdu:supervisor{李四 教授}
+\fdu:department{计算机科学技术学院}
+\fdu:major{计算机科学与技术}
+\fdu:date{2026年6月}
+\fdu:keywordsCn{深度学习，自然语言处理，预训练模型，文本生成，知识图谱}
+\fdu:keywordsEn{Deep Learning, Natural Language Processing, Pre-trained Models, Text Generation, Knowledge Graph}
+\fdu:clc{TP391}
 
+% 可选元数据设置（按需取消注释）
+% \fdu:tongdengxueli{true}       % 同等学力人员标记（非同等学力人员请勿设置）
+% \fdu:englishProject{true}      % 英文项目标记（非英文项目请勿设置）
+% \fdu:secretLevel{秘密}         % 涉密论文密级（公开论文请勿设置）
+% \fdu:secretYear{五年}          % 涉密论文保密年限
 
-\begin{center}
-    \neverindent
-    \nofolios
-    \bigskip
-    \begin[family=SimSun,weight=600,size=26pt]{font}
-        \begin[parameter=document.baselineskip,value=1.5ex]{set}
-            \img[src=fudan-name.pdf,height=125pt]\break
-            \smallskip
-            博 士 学 位 论 文\break
-            \bigskip
-            （学术学位）\break
-            \vfill
-            论文标题\break
-            \vfill
-            Thesis Title\break
-        \end{set}
-    \end{font}
-    \begin[weight=600,size=20pt,family=SimSun]{font}
-        \begin[cols=30%fw 30%fw, cellborder=0]{ptable}
-            \begin{row}
-                \cell[border=0 0 0 0, halign=raggedleft]{院\qquad系：}
-                \cell[border=0 0 0 0, halign=raggedright]{计算机科学与技术系}
-            \end{row}
-            \begin{row}
-                \cell[border=0 0 0 0, halign=raggedleft]{专\qquad业：}
-                \cell[border=0 0 0 0, halign=raggedright]{电子信息}
-            \end{row}
-            \begin{row}
-                \cell[border=0 0 0 0, halign=raggedleft]{姓\qquad名：}
-                \cell[border=0 0 0 0, halign=raggedright]{张三}
-            \end{row}
-            \begin{row}
-                \cell[border=0 0 0 0, halign=raggedleft]{指导教师：}
-                \cell[border=0 0 0 0, halign=raggedright]{某某某 教授}
-            \end{row}
-            \begin{row}
-                \cell[border=0 0 0 0, halign=raggedleft]{完成日期：}
-                \cell[border=0 0 0 0, halign=raggedright]{}
-            \end{row}
-        \end{ptable}
-    \end{font}
-\end{center}
+% 设置 PDF 文件元数据
+\fdu:pdfmetadata
 
-\set[parameter=document.parskip,value=4pt plus 1pt]
-\set[parameter=lists.parskip,value=2pt plus 1pt]
+% =========================================================================
+% 封面
+% =========================================================================
 
-\open-spread[double=false]
-\folios
-\set-counter[id=folio,value=1,display=roman]
+\fdu:makecover
+
+% =========================================================================
+% 独创性声明和授权声明（封三）
+% =========================================================================
+
+\fdu:declaration
+
+% =========================================================================
+% 前置部分（罗马数字页码）
+% =========================================================================
+
+\fdu:frontmatter
+
+% 扉页：指导小组成员名单
+\begin{fdu:instructors}
+
+李四　教授　　复旦大学计算机科学技术学院
+
+王五　教授　　复旦大学计算机科学技术学院
+
+赵六　副教授　复旦大学计算机科学技术学院
+
+\end{fdu:instructors}
+
+% 目录
 \tableofcontents
 
-\include[src=src/c01-introduction.sil]
-\include[src=src/c02-formula.sil]
-\include[src=src/c03-algorithms.sil]
-\include[src=src/c04-docref.sil]
-\include[src=src/c05-summary.sil]
-\include[src=src/c06-ref-ext.sil]
-\include[src=src/c07-ref.sil]
+% 中文摘要
+\include[src=src/abstract-cn.sil]
 
+% 英文摘要
+\include[src=src/abstract-en.sil]
+
+% =========================================================================
+% 正文部分（阿拉伯数字页码）
+% =========================================================================
+
+\fdu:mainmatter
+
+\include[src=src/c01-introduction.sil]
+\include[src=src/c02-related-work.sil]
+\include[src=src/c03-method.sil]
+\include[src=src/c04-experiment.sil]
+\include[src=src/c05-conclusion.sil]
+
+% =========================================================================
+% 后置部分
+% =========================================================================
+
+\fdu:backmatter
+
+% 参考文献
+\include[src=src/bibliography.sil]
+
+% 附录（如需要）
+% \include[src=src/appendix.sil]
+
+% 致谢
+\include[src=src/acknowledgements.sil]
 
 \end{document}

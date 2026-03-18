@@ -1,0 +1,34 @@
+\begin{document}
+
+\begin{fdu:abstract-en}
+
+With the rapid development of artificial intelligence, deep learning has achieved
+significant breakthroughs in the field of natural language processing (NLP).
+This dissertation systematically investigates key technologies of NLP based on
+deep learning, focusing on three main aspects: pre-trained language models,
+text generation, and knowledge graph construction.
+
+Regarding pre-trained language models, this dissertation proposes a novel pre-training
+strategy that incorporates multi-granularity semantic information, effectively enhancing
+the model's ability to understand Chinese text. Experimental results demonstrate that
+the proposed method achieves superior performance compared to baseline models on
+multiple Chinese natural language understanding benchmarks.
+
+In the area of text generation, this dissertation designs a knowledge-enhanced text
+generation framework. By dynamically incorporating external knowledge during the
+decoding phase, this framework addresses the factual error issues caused by insufficient
+knowledge in traditional generation models. Experiments on multiple text generation tasks
+validate the effectiveness of the proposed framework.
+
+For knowledge graph construction, this dissertation proposes a contrastive learning-based
+entity relation extraction method. By constructing positive and negative sample pairs
+for contrastive training, this method significantly improves relation extraction
+performance in low-resource scenarios.
+
+The research contributions of this dissertation hold both theoretical significance and
+practical value for advancing the application of deep learning in natural language
+processing.
+
+\end{fdu:abstract-en}
+
+\end{document}

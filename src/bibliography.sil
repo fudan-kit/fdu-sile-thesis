@@ -1,0 +1,59 @@
+\begin{document}
+
+\begin{fdu:bibliography}
+
+[1] Devlin J, Chang M W, Lee K, et al. BERT: Pre-training of Deep Bidirectional
+Transformers for Language Understanding[C]. Proceedings of NAACL-HLT, 2019: 4171-4186.
+
+[2] Vaswani A, Shazeer N, Parmar N, et al. Attention Is All You Need[C]. Advances in
+Neural Information Processing Systems, 2017: 5998-6008.
+
+[3] Radford A, Wu J, Child R, et al. Language Models are Unsupervised Multitask
+Learners[J]. OpenAI Blog, 2019, 1(8): 9.
+
+[4] Liu Y, Ott M, Goyal N, et al. RoBERTa: A Robustly Optimized BERT Pretraining
+Approach[J]. arXiv preprint arXiv:1907.11692, 2019.
+
+[5] Sun Y, Wang S, Li Y, et al. ERNIE: Enhanced Representation through Knowledge
+Integration[J]. arXiv preprint arXiv:1904.09223, 2019.
+
+[6] Cui Y, Che W, Liu T, et al. Pre-Training with Whole Word Masking for Chinese
+BERT[J]. IEEE/ACM Transactions on Audio, Speech, and Language Processing, 2021,
+29: 3504-3514.
+
+[7] Raffel C, Shazeer N, Roberts A, et al. Exploring the Limits of Transfer Learning
+with a Unified Text-to-Text Transformer[J]. Journal of Machine Learning Research,
+2020, 21(1): 5485-5551.
+
+[8] Lewis M, Liu Y, Goyal N, et al. BART: Denoising Sequence-to-Sequence Pre-training
+for Natural Language Generation, Translation, and Comprehension[C]. Proceedings of
+ACL, 2020: 7871-7880.
+
+[9] Brown T B, Mann B, Ryder N, et al. Language Models are Few-Shot Learners[C].
+Advances in Neural Information Processing Systems, 2020, 33: 1877-1901.
+
+[10] Xu L, Hu H, Zhang X, et al. CLUE: A Chinese Language Understanding Evaluation
+Benchmark[C]. Proceedings of COLING, 2020: 4762-4772.
+
+[11] Bordes A, Usunier N, Garcia-Duran A, et al. Translating Embeddings for Modeling
+Multi-relational Data[C]. Advances in Neural Information Processing Systems, 2013:
+2787-2795.
+
+[12] Ji S, Pan S, Cambria E, et al. A Survey on Knowledge Graphs: Representation,
+Acquisition, and Applications[J]. IEEE Transactions on Neural Networks and Learning
+Systems, 2022, 33(2): 494-514.
+
+[13] Li Y, Li D, Yin Y, et al. DuIE: A Large-scale Chinese Knowledge Graph
+Relation Extraction Dataset[C]. Natural Language Processing and Chinese Computing,
+2019: 811-819.
+
+[14] Zhang Y, Zhong V, Chen D, et al. Position-aware Attention and Supervised Data
+Improve Slot Filling[C]. Proceedings of EMNLP, 2017: 35-45.
+
+[15] Chen T, Kornblith S, Norouzi M, et al. A Simple Framework for Contrastive
+Learning of Visual Representations[C]. International Conference on Machine Learning,
+2020: 1597-1607.
+
+\end{fdu:bibliography}
+
+\end{document}
