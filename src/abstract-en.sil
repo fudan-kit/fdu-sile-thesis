@@ -2,32 +2,11 @@
 
 \begin{fdu:abstract-en}
 
-With the rapid development of artificial intelligence, deep learning has achieved
-significant breakthroughs in the field of natural language processing (NLP).
-This dissertation systematically investigates key technologies of NLP based on
-deep learning, focusing on three main aspects: pre-trained language models,
-text generation, and knowledge graph construction.
+This document serves as a user guide for the Fudan University thesis typesetting template based on SILE. SILE (Simon's Improved Layout Engine) is a modern typesetting system that inherits the excellent typesetting philosophy of TeX while using Lua as its extension language, offering high flexibility and customizability.
 
-Regarding pre-trained language models, this dissertation proposes a novel pre-training
-strategy that incorporates multi-granularity semantic information, effectively enhancing
-the model's ability to understand Chinese text. Experimental results demonstrate that
-the proposed method achieves superior performance compared to baseline models on
-multiple Chinese natural language understanding benchmarks.
+This template is developed based on SILE 0.15.x and strictly follows the "Fudan University Doctoral and Master's Thesis Regulations (Revised October 2024)". It supports the typesetting of both doctoral and master's degree theses, providing complete thesis structure components including cover page, declaration page, table of contents, abstract, main text, bibliography, appendix, and acknowledgements.
 
-In the area of text generation, this dissertation designs a knowledge-enhanced text
-generation framework. By dynamically incorporating external knowledge during the
-decoding phase, this framework addresses the factual error issues caused by insufficient
-knowledge in traditional generation models. Experiments on multiple text generation tasks
-validate the effectiveness of the proposed framework.
-
-For knowledge graph construction, this dissertation proposes a contrastive learning-based
-entity relation extraction method. By constructing positive and negative sample pairs
-for contrastive training, this method significantly improves relation extraction
-performance in low-resource scenarios.
-
-The research contributions of this dissertation hold both theoretical significance and
-practical value for advancing the application of deep learning in natural language
-processing.
+This guide provides detailed instructions on template installation and configuration, basic typesetting features, figure and table examples, reference management, and advanced customization options, aiming to help users quickly get started with the template for thesis typesetting.
 
 \end{fdu:abstract-en}
 

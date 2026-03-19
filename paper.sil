@@ -6,15 +6,15 @@
 
 \fdu:schoolCode{10246}
 \fdu:studentId{12345678901}
-\fdu:title{基于深度学习的自然语言处理关键技术研究}
-\fdu:titleEn{Research on Key Technologies of Natural Language Processing Based on Deep Learning}
+\fdu:title{复旦大学学位论文 SILE 排版模板使用指南}
+\fdu:titleEn{User Guide for Fudan University Thesis SILE Typesetting Template}
 \fdu:author{张三}
 \fdu:supervisor{李四 教授}
 \fdu:department{计算机科学技术学院}
 \fdu:major{计算机科学与技术}
 \fdu:date{2026年6月}
-\fdu:keywordsCn{深度学习，自然语言处理，预训练模型，文本生成，知识图谱}
-\fdu:keywordsEn{Deep Learning, Natural Language Processing, Pre-trained Models, Text Generation, Knowledge Graph}
+\fdu:keywordsCn{SILE 排版系统，学位论文模板，复旦大学，中文排版，自动化排版}
+\fdu:keywordsEn{SILE Typesetting System, Thesis Template, Fudan University, Chinese Typesetting, Automated Typesetting}
 \fdu:clc{TP391}
 
 % 可选元数据设置（按需取消注释）
@@ -31,12 +31,6 @@
 % =========================================================================
 
 \fdu:makecover
-
-% =========================================================================
-% 独创性声明和授权声明（封三）
-% =========================================================================
-
-\fdu:declaration
 
 % =========================================================================
 % 前置部分（罗马数字页码）
@@ -85,10 +79,16 @@
 % 参考文献
 \include[src=src/bibliography.sil]
 
-% 附录（如需要）
-% \include[src=src/appendix.sil]
+% 附录
+\include[src=src/appendix.sil]
 
 % 致谢
 \include[src=src/acknowledgements.sil]
+
+% =========================================================================
+% 独创性声明和授权声明（末页）
+% =========================================================================
+
+\fdu:declaration
 
 \end{document}

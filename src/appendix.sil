@@ -1,0 +1,71 @@
+\begin{document}
+
+\begin{fdu:appendix}
+
+\fdu:appendix-section{补充实验数据}
+
+本附录用于展示附录的排版格式和使用方法。在学位论文中，附录通常用于存放以下内容：
+
+（1）正文中未能详细展示的实验数据和结果。
+
+（2）计算公式的详细推导过程。
+
+（3）调查问卷、量表等研究工具。
+
+（4）程序源代码片段。
+
+（5）其他与论文正文相关的补充材料。
+
+附录中的内容应当是对正文的补充，而非正文的重复。附录中的图表编号应独立于正文，使用附录字母作为前缀，如"图 A.1""表 A.2"等。
+
+以下是附录中表格的排版示例：
+
+\center{\font[family=黑体, size=10.5pt]{表 A.1　补充实验结果}}
+
+\medskip
+
+\noindent\hrule[width=146.4mm, height=0.8pt]
+
+\smallskip
+
+\noindent\font[family=黑体, size=10.5pt]{参数设置　　　　实验一　　　　实验二　　　　实验三}
+
+\smallskip
+
+\noindent\hrule[width=146.4mm, height=0.4pt]
+
+\smallskip
+
+\noindent\font[family=宋体, size=10.5pt]{设置 A　　　　　85.2　　　　　87.3　　　　　86.1}
+
+\noindent\font[family=宋体, size=10.5pt]{设置 B　　　　　88.7　　　　　89.1　　　　　88.5}
+
+\noindent\font[family=宋体, size=10.5pt]{设置 C　　　　　91.3　　　　　90.8　　　　　91.0}
+
+\smallskip
+
+\noindent\hrule[width=146.4mm, height=0.8pt]
+
+\fdu:appendix-section{缩略语与符号表}
+
+以下是本模板中使用的缩略语和相关术语说明：
+
+SILE — Simon's Improved Layout Engine，一个现代化的排版引擎，使用 Lua 语言进行扩展。
+
+TeX — 由 Donald Knuth 于 1978 年创建的排版系统，是计算机排版领域的奠基性工作。
+
+LaTeX — 基于 TeX 的文档准备系统，由 Leslie Lamport 开发，是目前学术界最广泛使用的排版工具。
+
+Lua — 一种轻量级的脚本编程语言，SILE 使用 Lua 作为其扩展语言。
+
+PDF — Portable Document Format，便携式文档格式，是学位论文的标准提交格式。
+
+CJK — Chinese, Japanese, Korean，中日韩统一表意文字编码方案。
+
+UTF-8 — Unicode Transformation Format - 8-bit，一种变长字符编码方式，能够表示 Unicode 标准中的所有字符。
+
+OpenType — 一种跨平台的字体格式标准，支持高级排版特性。
+
+\end{fdu:appendix}
+
+\end{document}

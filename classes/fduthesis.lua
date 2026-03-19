@@ -5,6 +5,7 @@
 --- @use classes.fduthesis
 
 local book = require("classes.book")
+local plain = require("classes.plain")
 
 local class = pl.class(book)
 class._name = "fduthesis"
@@ -33,8 +34,6 @@ local function toChineseNumber (n)
    return _digits[tens] .. "十" .. _digits[ones]
 end
 
--- A4 paper (210mm × 297mm) with Word default margins
--- Top/Bottom: 2.54cm (25.4mm), Left/Right: 3.18cm (31.8mm)
 class.defaultFrameset = {
    content = {
       left = "31.8mm",
@@ -92,11 +91,113 @@ function class:_init (options)
    self:loadPackage("color")
    self:loadPackage("rules")
    self:loadPackage("raiselower")
-   SILE.settings:set("document.language", "zh", true)
-   SILE.settings:set("font.family", "SimSun", true)
+   SILE.settings:set("document.language", "zh-hans", true)
+   SILE.settings:set("font.family", "宋体", true)
    SILE.settings:set("font.size", 12, true)
    SILE.settings:set("document.baselineskip", SILE.types.node.vglue("20pt"), true)
    SILE.settings:set("document.parindent", SILE.types.node.glue("2em"), true)
+
+   self:_registerTocOverrides()
+end
+
+function class:_registerTocOverrides ()
+   self:registerCommand("tableofcontents:headerfont", function (_, content)
+      SILE.call("font", { family = "黑体", weight = 700, size = "16pt" }, content)
+   end)
+
+   self:registerCommand("tableofcontents:header", function (_, _)
+      SILE.typesetter:leaveHmode()
+      SILE.call("center", {}, function ()
+         SILE.call("tableofcontents:headerfont", {}, function ()
+            SILE.typesetter:typeset("目　　录")
+         end)
+      end)
+      SILE.call("bigskip")
+      SILE.call("left-running-head", {}, function ()
+         SILE.call("book:left-running-head-font", {}, function ()
+            SILE.typesetter:typeset("目录")
+         end)
+      end)
+      SILE.call("right-running-head", {}, function ()
+         SILE.call("book:right-running-head-font", {}, function ()
+            SILE.call("raggedleft", {}, function ()
+               SILE.typesetter:typeset("目录")
+            end)
+         end)
+      end)
+   end)
+
+   self:registerCommand("tableofcontents:notocmessage", function (_, _)
+      SILE.call("tableofcontents:headerfont", {}, function ()
+         SILE.typesetter:typeset("目录内容将在第二次编译后生成")
+      end)
+   end)
+
+   self:registerCommand("tableofcontents:footer", function (_, _) end)
+
+   self:registerCommand("tableofcontents:level1item", function (_, content)
+      SILE.call("goodbreak")
+      SILE.call("medskip")
+      SILE.call("noindent")
+      SILE.call("font", { family = "黑体", size = "12pt", weight = 700 }, content)
+      SILE.call("par")
+   end)
+
+   self:registerCommand("tableofcontents:level2item", function (_, content)
+      SILE.settings:temporarily(function ()
+         SILE.settings:set("document.lskip", SILE.types.node.glue("2em"))
+         SILE.call("noindent")
+         SILE.call("font", { family = "宋体", size = "12pt" }, content)
+         SILE.call("par")
+      end)
+   end)
+
+   self:registerCommand("tableofcontents:level3item", function (_, content)
+      SILE.settings:temporarily(function ()
+         SILE.settings:set("document.lskip", SILE.types.node.glue("4em"))
+         SILE.call("noindent")
+         SILE.call("font", { family = "宋体", size = "10.5pt" }, content)
+         SILE.call("par")
+      end)
+   end)
+
+   self:registerCommand("tableofcontents:level1number", function (_, content)
+      SILE.process(content)
+   end)
+   self:registerCommand("tableofcontents:level2number", function (_, content)
+      SILE.process(content)
+   end)
+   self:registerCommand("tableofcontents:level3number", function (_, content)
+      SILE.process(content)
+   end)
+end
+
+function class:endPage ()
+   if not SILE.scratch.headers.skipthispage then
+      local headerContent
+      if self:oddPage() then
+         headerContent = SILE.scratch.headers.right
+      else
+         headerContent = SILE.scratch.headers.left
+      end
+      if headerContent then
+         SILE.typesetNaturally(SILE.getFrame("runningHead"), function ()
+            SILE.settings:toplevelState()
+            SILE.settings:set("current.parindent", SILE.types.node.glue())
+            SILE.settings:set("document.lskip", SILE.types.node.glue())
+            SILE.settings:set("document.rskip", SILE.types.node.glue())
+            SILE.settings:set("document.baselineskip", SILE.types.node.vglue("12pt"))
+            SILE.process(headerContent)
+            SILE.call("par")
+            SILE.typesetter:leaveHmode()
+            SILE.call("noindent")
+            SILE.call("hrulefill", { thickness = "0.5pt", raise = "0pt" })
+            SILE.typesetter:leaveHmode()
+         end)
+      end
+   end
+   SILE.scratch.headers.skipthispage = false
+   return plain.endPage(self)
 end
 
 function class:declareOptions ()
@@ -117,10 +218,6 @@ end
 
 function class:registerCommands ()
    book.registerCommands(self)
-
-   -- =========================================================================
-   -- Metadata commands
-   -- =========================================================================
 
    local metaKeys = {
       "title",
@@ -148,105 +245,45 @@ function class:registerCommands ()
       end, "Set thesis metadata: " .. key)
    end
 
-   -- =========================================================================
-   -- Font style commands
-   -- =========================================================================
-
    self:registerCommand("fdu:heiti", function (_, content)
-      SILE.call("font", { family = "SimHei" }, content)
-   end, "SimHei (黑体) font")
+      SILE.call("font", { family = "黑体" }, content)
+   end, "黑体 font")
 
    self:registerCommand("fdu:songti", function (_, content)
-      SILE.call("font", { family = "SimSun" }, content)
-   end, "SimSun (宋体) font")
+      SILE.call("font", { family = "宋体" }, content)
+   end, "宋体 font")
 
    self:registerCommand("fdu:kaiti", function (_, content)
-      SILE.call("font", { family = "KaiTi" }, content)
-   end, "KaiTi (楷体) font")
+      SILE.call("font", { family = "楷体" }, content)
+   end, "楷体 font")
 
    self:registerCommand("fdu:fangsong", function (_, content)
-      SILE.call("font", { family = "FangSong" }, content)
-   end, "FangSong (仿宋) font")
+      SILE.call("font", { family = "仿宋" }, content)
+   end, "仿宋 font")
 
    self:registerCommand("fdu:code", function (_, content)
       SILE.call("font", { family = "Hack", size = "0.9em", language = "und" }, content)
    end, "Inline code font")
 
    self:registerCommand("fdu:emph", function (_, content)
-      SILE.call("font", { family = "KaiTi" }, content)
-   end, "Chinese emphasis using KaiTi")
+      SILE.call("font", { family = "楷体" }, content)
+   end, "Chinese emphasis using 楷体")
 
-   -- Override book heading fonts for Chinese thesis
    self:registerCommand("book:chapterfont", function (_, content)
-      SILE.call("font", { family = "SimHei", weight = 700, size = "16pt" }, content)
+      SILE.call("font", { family = "黑体", weight = 700, size = "16pt" }, content)
    end)
    self:registerCommand("book:sectionfont", function (_, content)
-      SILE.call("font", { family = "SimHei", weight = 700, size = "14pt" }, content)
+      SILE.call("font", { family = "黑体", weight = 700, size = "14pt" }, content)
    end)
    self:registerCommand("book:subsectionfont", function (_, content)
-      SILE.call("font", { family = "SimHei", weight = 700, size = "12pt" }, content)
+      SILE.call("font", { family = "黑体", weight = 700, size = "12pt" }, content)
    end)
 
-   -- Running head fonts
    self:registerCommand("book:left-running-head-font", function (_, content)
-      SILE.call("font", { family = "SimSun", size = "10pt" }, content)
+      SILE.call("font", { family = "宋体", size = "10.5pt" }, content)
    end)
    self:registerCommand("book:right-running-head-font", function (_, content)
-      SILE.call("font", { family = "SimSun", size = "10pt" }, content)
-   end)
-
-   -- =========================================================================
-   -- Table of Contents customization
-   -- =========================================================================
-
-   self:registerCommand("tableofcontents:headerfont", function (_, content)
-      SILE.call("font", { family = "SimHei", weight = 700, size = "16pt" }, content)
-   end)
-
-   self:registerCommand("tableofcontents:header", function (_, _)
-      SILE.call("par")
-      SILE.call("noindent")
-      SILE.call("center", {}, function ()
-         SILE.call("tableofcontents:headerfont", {}, function ()
-            SILE.typesetter:typeset("目　　录")
-         end)
-      end)
-      SILE.call("bigskip")
-   end)
-
-   self:registerCommand("tableofcontents:level1item", function (_, content)
-      SILE.call("goodbreak")
-      SILE.call("noindent")
-      SILE.call("font", { family = "SimHei", size = "12pt", weight = 700 }, content)
-      SILE.call("smallskip")
-   end)
-
-   self:registerCommand("tableofcontents:level2item", function (_, content)
-      SILE.settings:temporarily(function ()
-         SILE.settings:set("document.lskip", SILE.types.node.glue("2em"))
-         SILE.call("noindent")
-         SILE.call("font", { family = "SimSun", size = "12pt" }, content)
-      end)
-      SILE.call("smallskip")
-   end)
-
-   self:registerCommand("tableofcontents:level3item", function (_, content)
-      SILE.settings:temporarily(function ()
-         SILE.settings:set("document.lskip", SILE.types.node.glue("4em"))
-         SILE.call("noindent")
-         SILE.call("font", { family = "SimSun", size = "10.5pt" }, content)
-      end)
-      SILE.call("smallskip")
-   end)
-
-   self:registerCommand("tableofcontents:level1number", function (_, content)
-      SILE.process(content)
-   end)
-   self:registerCommand("tableofcontents:level2number", function (_, content)
-      SILE.process(content)
-   end)
-   self:registerCommand("tableofcontents:level3number", function (_, content)
-      SILE.process(content)
+      SILE.call("font", { family = "宋体", size = "10.5pt" }, content)
    end)
 
    -- =========================================================================
@@ -259,35 +296,26 @@ function class:registerCommands ()
       SILE.call("nofolios")
       SILE.scratch.headers.skipthispage = true
 
-      -- Secret level (right-aligned, above school code per standard)
       if info.secretLevel ~= "" then
-         SILE.call("raggedleft", {}, function ()
-            SILE.call("font", { family = "SimSun", size = "14pt" }, function ()
-               local secretText = "密级：" .. info.secretLevel
+         SILE.settings:temporarily(function ()
+            SILE.settings:set("document.lskip", SILE.types.node.glue("95mm"))
+            SILE.settings:set("document.parindent", SILE.types.node.glue("0pt"))
+            SILE.call("font", { family = "宋体", size = "14pt" }, function ()
+               SILE.call("noindent")
+               local secretText = "密　　级：" .. info.secretLevel
                if info.secretYear ~= "" then
                   secretText = secretText .. info.secretYear
                end
                SILE.typesetter:typeset(secretText)
+               SILE.call("par")
             end)
          end)
       end
 
-      -- School code and student ID (right-aligned)
-      SILE.call("raggedleft", {}, function ()
-         SILE.call("font", { family = "SimSun", size = "14pt" }, function ()
-            SILE.typesetter:typeset("学校代码：" .. info.schoolCode)
-         end)
-      end)
-      SILE.call("raggedleft", {}, function ()
-         SILE.call("font", { family = "SimSun", size = "14pt" }, function ()
-            SILE.typesetter:typeset("学　　号：" .. info.studentId)
-         end)
-      end)
-
-      -- Tongdengxueli / English project (right-aligned, if applicable)
       if info.tongdengxueli ~= "" or info.englishProject ~= "" then
+         SILE.typesetter:leaveHmode()
          SILE.call("raggedleft", {}, function ()
-            SILE.call("font", { family = "SimSun", size = "14pt" }, function ()
+            SILE.call("font", { family = "宋体", size = "14pt" }, function ()
                local parts = {}
                if info.tongdengxueli ~= "" then
                   table.insert(parts, "同等学力人员")
@@ -303,14 +331,14 @@ function class:registerCommands ()
       SILE.call("bigskip")
       SILE.call("vfill")
 
-      -- University name (image or fallback text)
+      SILE.typesetter:leaveHmode()
       SILE.call("center", {}, function ()
          SILE.call("noindent")
          local ok = pcall(function ()
             SILE.call("img", { src = "fudan-name.pdf", height = "80pt" })
          end)
          if not ok then
-            SILE.call("font", { family = "SimSun", weight = 700, size = "36pt" }, function ()
+            SILE.call("font", { family = "宋体", weight = 700, size = "36pt" }, function ()
                SILE.typesetter:typeset("复 旦 大 学")
             end)
          end
@@ -318,7 +346,6 @@ function class:registerCommands ()
 
       SILE.call("bigskip")
 
-      -- Degree type title
       local degreeTitle
       if info.type == "doctor" then
          degreeTitle = "博 士 学 位 论 文"
@@ -328,19 +355,20 @@ function class:registerCommands ()
          degreeTitle = "本 科 毕 业 论 文"
       end
 
+      SILE.typesetter:leaveHmode()
       SILE.call("center", {}, function ()
          SILE.call("noindent")
-         SILE.call("font", { family = "SimHei", weight = 700, size = "26pt" }, function ()
+         SILE.call("font", { family = "黑体", weight = 700, size = "26pt" }, function ()
             SILE.typesetter:typeset(degreeTitle)
          end)
       end)
 
-      -- Degree category (academic/professional)
       if info.type ~= "bachelor" then
          SILE.call("medskip")
+         SILE.typesetter:leaveHmode()
          SILE.call("center", {}, function ()
             SILE.call("noindent")
-            SILE.call("font", { family = "SimSun", size = "16pt" }, function ()
+            SILE.call("font", { family = "宋体", size = "16pt" }, function ()
                if info.degree == "professional" then
                   SILE.typesetter:typeset("（专业学位）")
                else
@@ -350,19 +378,33 @@ function class:registerCommands ()
          end)
       end
 
+      SILE.call("smallskip")
+      SILE.settings:temporarily(function ()
+         SILE.settings:set("document.lskip", SILE.types.node.glue("97mm"))
+         SILE.settings:set("document.parindent", SILE.types.node.glue("0pt"))
+         SILE.call("font", { family = "宋体", size = "14pt" }, function ()
+            SILE.call("noindent")
+            SILE.typesetter:typeset("学校代码：" .. info.schoolCode)
+            SILE.call("par")
+            SILE.call("noindent")
+            SILE.typesetter:typeset("学　　号：" .. info.studentId)
+            SILE.call("par")
+         end)
+      end)
+
       SILE.call("vfill")
 
-      -- Chinese title
+      SILE.typesetter:leaveHmode()
       SILE.call("center", {}, function ()
          SILE.call("noindent")
-         SILE.call("font", { family = "SimHei", weight = 700, size = "22pt" }, function ()
+         SILE.call("font", { family = "黑体", weight = 700, size = "22pt" }, function ()
             SILE.typesetter:typeset(info.title)
          end)
       end)
 
       SILE.call("medskip")
 
-      -- English title
+      SILE.typesetter:leaveHmode()
       SILE.call("center", {}, function ()
          SILE.call("noindent")
          SILE.call("font", { family = "Times New Roman", weight = 700, size = "16pt" }, function ()
@@ -372,7 +414,6 @@ function class:registerCommands ()
 
       SILE.call("vfill")
 
-      -- Author information (left-aligned block, visually centered on page)
       SILE.settings:temporarily(function ()
          local lskip = "32mm"
          if info.degree == "professional" and info.type ~= "bachelor" then
@@ -381,7 +422,7 @@ function class:registerCommands ()
          SILE.settings:set("document.lskip", SILE.types.node.glue(lskip))
          SILE.settings:set("document.parindent", SILE.types.node.glue("0pt"))
          SILE.settings:set("document.baselineskip", SILE.types.node.vglue("28pt"))
-         SILE.call("font", { family = "SimSun", size = "16pt" }, function ()
+         SILE.call("font", { family = "宋体", size = "16pt" }, function ()
             SILE.call("noindent")
             SILE.typesetter:typeset("院　　系：" .. info.department)
             SILE.call("par")
@@ -411,7 +452,7 @@ function class:registerCommands ()
    end, "Generate thesis cover page")
 
    -- =========================================================================
-   -- Declaration page (独创性声明 + 使用授权声明)
+   -- Declaration page
    -- =========================================================================
 
    self:registerCommand("fdu:declaration", function (_, _)
@@ -420,14 +461,15 @@ function class:registerCommands ()
       SILE.call("noindent")
       SILE.call("vfill")
 
-      -- Originality declaration
+      SILE.typesetter:leaveHmode()
       SILE.call("center", {}, function ()
-         SILE.call("font", { family = "SimHei", weight = 700, size = "16pt" }, function ()
+         SILE.call("font", { family = "黑体", weight = 700, size = "16pt" }, function ()
             SILE.typesetter:typeset("复旦大学")
          end)
       end)
+      SILE.typesetter:leaveHmode()
       SILE.call("center", {}, function ()
-         SILE.call("font", { family = "SimHei", weight = 700, size = "16pt" }, function ()
+         SILE.call("font", { family = "黑体", weight = 700, size = "16pt" }, function ()
             SILE.typesetter:typeset("学位论文独创性声明")
          end)
       end)
@@ -435,7 +477,7 @@ function class:registerCommands ()
 
       SILE.settings:temporarily(function ()
          SILE.settings:set("document.baselineskip", SILE.types.node.vglue("22pt"))
-         SILE.call("font", { family = "SimSun", size = "12pt" }, function ()
+         SILE.call("font", { family = "宋体", size = "12pt" }, function ()
             SILE.typesetter:typeset(
                "本人郑重声明：所呈交的学位论文，是本人在导师的指导下，独立进行研究工作所取得的成果。论文中除特别标注的内容外，不包含任何其他个人或机构已经发表或撰写过的研究成果。对本研究做出重要贡献的个人和集体，均已在论文中作了明确的声明并表示了谢意。本声明的法律结果由本人承担。"
             )
@@ -445,22 +487,24 @@ function class:registerCommands ()
 
       SILE.call("bigskip")
       SILE.call("bigskip")
+      SILE.typesetter:leaveHmode()
       SILE.call("raggedleft", {}, function ()
-         SILE.call("font", { family = "SimSun", size = "12pt" }, function ()
+         SILE.call("font", { family = "宋体", size = "12pt" }, function ()
             SILE.typesetter:typeset("作者签名：　　　　　　　　日期：　　　年　　月　　日")
          end)
       end)
 
       SILE.call("vfill")
 
-      -- Authorization declaration
+      SILE.typesetter:leaveHmode()
       SILE.call("center", {}, function ()
-         SILE.call("font", { family = "SimHei", weight = 700, size = "16pt" }, function ()
+         SILE.call("font", { family = "黑体", weight = 700, size = "16pt" }, function ()
             SILE.typesetter:typeset("复旦大学")
          end)
       end)
+      SILE.typesetter:leaveHmode()
       SILE.call("center", {}, function ()
-         SILE.call("font", { family = "SimHei", weight = 700, size = "16pt" }, function ()
+         SILE.call("font", { family = "黑体", weight = 700, size = "16pt" }, function ()
             SILE.typesetter:typeset("学位论文使用授权声明")
          end)
       end)
@@ -468,7 +512,7 @@ function class:registerCommands ()
 
       SILE.settings:temporarily(function ()
          SILE.settings:set("document.baselineskip", SILE.types.node.vglue("22pt"))
-         SILE.call("font", { family = "SimSun", size = "12pt" }, function ()
+         SILE.call("font", { family = "宋体", size = "12pt" }, function ()
             SILE.typesetter:typeset(
                "本人完全了解复旦大学有关收藏和利用博士、硕士学位论文的规定，即：学校有权收藏、使用并向国家有关部门或机构送交论文的印刷本和电子版本；允许论文被查阅和借阅；学校可以公布论文的全部或部分内容，可以采用影印、缩印或其它复制手段保存论文。涉密学位论文在解密后遵守此规定。"
             )
@@ -478,8 +522,9 @@ function class:registerCommands ()
 
       SILE.call("bigskip")
       SILE.call("bigskip")
+      SILE.typesetter:leaveHmode()
       SILE.call("raggedleft", {}, function ()
-         SILE.call("font", { family = "SimSun", size = "12pt" }, function ()
+         SILE.call("font", { family = "宋体", size = "12pt" }, function ()
             SILE.typesetter:typeset("作者签名：　　　　　导师签名：　　　　　日期：　　　年　　月　　日")
          end)
       end)
@@ -490,7 +535,7 @@ function class:registerCommands ()
    end, "Generate declaration pages")
 
    -- =========================================================================
-   -- Instructor list page (扉页：指导小组成员名单)
+   -- Instructor list page
    -- =========================================================================
 
    self:registerCommand("fdu:instructors", function (_, content)
@@ -498,8 +543,9 @@ function class:registerCommands ()
       SILE.call("nofolios")
       SILE.call("noindent")
 
+      SILE.typesetter:leaveHmode()
       SILE.call("center", {}, function ()
-         SILE.call("font", { family = "SimHei", weight = 700, size = "16pt" }, function ()
+         SILE.call("font", { family = "黑体", weight = 700, size = "16pt" }, function ()
             SILE.typesetter:typeset("指导小组成员名单")
          end)
       end)
@@ -508,8 +554,12 @@ function class:registerCommands ()
 
       SILE.settings:temporarily(function ()
          SILE.settings:set("document.baselineskip", SILE.types.node.vglue("22pt"))
-         SILE.call("font", { family = "SimSun", size = "12pt" }, function ()
-            SILE.process(content)
+         SILE.settings:set("document.parindent", SILE.types.node.glue("0pt"))
+         SILE.typesetter:leaveHmode()
+         SILE.call("center", {}, function ()
+            SILE.call("font", { family = "宋体", size = "12pt" }, function ()
+               SILE.process(content)
+            end)
          end)
       end)
 
@@ -527,8 +577,22 @@ function class:registerCommands ()
       SILE.call("noindent")
       SILE.call("tocentry", { level = 1 }, { "摘要" })
 
+      SILE.call("left-running-head", {}, function ()
+         SILE.call("book:left-running-head-font", {}, function ()
+            SILE.typesetter:typeset("摘要")
+         end)
+      end)
+      SILE.call("right-running-head", {}, function ()
+         SILE.call("book:right-running-head-font", {}, function ()
+            SILE.call("raggedleft", {}, function ()
+               SILE.typesetter:typeset("摘要")
+            end)
+         end)
+      end)
+
+      SILE.typesetter:leaveHmode()
       SILE.call("center", {}, function ()
-         SILE.call("font", { family = "SimHei", weight = 700, size = "16pt" }, function ()
+         SILE.call("font", { family = "黑体", weight = 700, size = "16pt" }, function ()
             SILE.typesetter:typeset("摘　　要")
          end)
       end)
@@ -536,7 +600,7 @@ function class:registerCommands ()
 
       SILE.settings:temporarily(function ()
          SILE.settings:set("document.baselineskip", SILE.types.node.vglue("20pt"))
-         SILE.call("font", { family = "SimSun", size = "12pt" }, function ()
+         SILE.call("font", { family = "宋体", size = "12pt" }, function ()
             SILE.process(content)
             SILE.call("par")
          end)
@@ -546,10 +610,10 @@ function class:registerCommands ()
       if info.keywordsCn ~= "" then
          SILE.call("bigskip")
          SILE.call("noindent")
-         SILE.call("font", { family = "SimHei", weight = 700, size = "12pt" }, function ()
+         SILE.call("font", { family = "黑体", weight = 700, size = "12pt" }, function ()
             SILE.typesetter:typeset("关键词：")
          end)
-         SILE.call("font", { family = "SimSun", size = "12pt" }, function ()
+         SILE.call("font", { family = "宋体", size = "12pt" }, function ()
             SILE.typesetter:typeset(info.keywordsCn)
          end)
          SILE.call("par")
@@ -557,10 +621,10 @@ function class:registerCommands ()
 
       if info.clc ~= "" then
          SILE.call("noindent")
-         SILE.call("font", { family = "SimHei", weight = 700, size = "12pt" }, function ()
+         SILE.call("font", { family = "黑体", weight = 700, size = "12pt" }, function ()
             SILE.typesetter:typeset("中图分类号：")
          end)
-         SILE.call("font", { family = "SimSun", size = "12pt" }, function ()
+         SILE.call("font", { family = "宋体", size = "12pt" }, function ()
             SILE.typesetter:typeset(info.clc)
          end)
          SILE.call("par")
@@ -580,6 +644,20 @@ function class:registerCommands ()
       SILE.call("noindent")
       SILE.call("tocentry", { level = 1 }, { "Abstract" })
 
+      SILE.call("left-running-head", {}, function ()
+         SILE.call("book:left-running-head-font", {}, function ()
+            SILE.typesetter:typeset("Abstract")
+         end)
+      end)
+      SILE.call("right-running-head", {}, function ()
+         SILE.call("book:right-running-head-font", {}, function ()
+            SILE.call("raggedleft", {}, function ()
+               SILE.typesetter:typeset("Abstract")
+            end)
+         end)
+      end)
+
+      SILE.typesetter:leaveHmode()
       SILE.call("center", {}, function ()
          SILE.call("font", { family = "Times New Roman", weight = 700, size = "16pt" }, function ()
             SILE.typesetter:typeset("Abstract")
@@ -638,26 +716,33 @@ function class:registerCommands ()
    self:registerCommand("fdu:acknowledgements", function (_, content)
       SILE.call("par")
       SILE.call("open-spread", { double = false })
-      SILE.scratch.headers.skipthispage = true
       SILE.call("noindent")
       SILE.call("tocentry", { level = 1 }, { "致谢" })
-
-      SILE.call("center", {}, function ()
-         SILE.call("font", { family = "SimHei", weight = 700, size = "16pt" }, function ()
-            SILE.typesetter:typeset("致　　谢")
-         end)
-      end)
-      SILE.call("bigskip")
 
       SILE.call("left-running-head", {}, function ()
          SILE.call("book:left-running-head-font", {}, function ()
             SILE.typesetter:typeset("致谢")
          end)
       end)
+      SILE.call("right-running-head", {}, function ()
+         SILE.call("book:right-running-head-font", {}, function ()
+            SILE.call("raggedleft", {}, function ()
+               SILE.typesetter:typeset("致谢")
+            end)
+         end)
+      end)
+
+      SILE.typesetter:leaveHmode()
+      SILE.call("center", {}, function ()
+         SILE.call("font", { family = "黑体", weight = 700, size = "16pt" }, function ()
+            SILE.typesetter:typeset("致　　谢")
+         end)
+      end)
+      SILE.call("bigskip")
 
       SILE.settings:temporarily(function ()
          SILE.settings:set("document.baselineskip", SILE.types.node.vglue("20pt"))
-         SILE.call("font", { family = "SimSun", size = "12pt" }, function ()
+         SILE.call("font", { family = "宋体", size = "12pt" }, function ()
             SILE.process(content)
             SILE.call("par")
          end)
@@ -674,22 +759,30 @@ function class:registerCommands ()
       SILE.call("noindent")
       SILE.call("tocentry", { level = 1 }, { "参考文献" })
 
-      SILE.call("center", {}, function ()
-         SILE.call("font", { family = "SimHei", weight = 700, size = "16pt" }, function ()
-            SILE.typesetter:typeset("参考文献")
-         end)
-      end)
-      SILE.call("bigskip")
-
       SILE.call("left-running-head", {}, function ()
          SILE.call("book:left-running-head-font", {}, function ()
             SILE.typesetter:typeset("参考文献")
          end)
       end)
+      SILE.call("right-running-head", {}, function ()
+         SILE.call("book:right-running-head-font", {}, function ()
+            SILE.call("raggedleft", {}, function ()
+               SILE.typesetter:typeset("参考文献")
+            end)
+         end)
+      end)
+
+      SILE.typesetter:leaveHmode()
+      SILE.call("center", {}, function ()
+         SILE.call("font", { family = "黑体", weight = 700, size = "16pt" }, function ()
+            SILE.typesetter:typeset("参考文献")
+         end)
+      end)
+      SILE.call("bigskip")
 
       SILE.settings:temporarily(function ()
          SILE.settings:set("document.baselineskip", SILE.types.node.vglue("18pt"))
-         SILE.call("font", { family = "SimSun", size = "10.5pt" }, function ()
+         SILE.call("font", { family = "宋体", size = "10.5pt" }, function ()
             SILE.process(content)
             SILE.call("par")
          end)
@@ -706,37 +799,70 @@ function class:registerCommands ()
       SILE.call("noindent")
       SILE.call("tocentry", { level = 1 }, { "附录" })
 
-      SILE.call("center", {}, function ()
-         SILE.call("font", { family = "SimHei", weight = 700, size = "16pt" }, function ()
-            SILE.typesetter:typeset("附　　录")
-         end)
-      end)
-      SILE.call("bigskip")
-
       SILE.call("left-running-head", {}, function ()
          SILE.call("book:left-running-head-font", {}, function ()
             SILE.typesetter:typeset("附录")
          end)
       end)
+      SILE.call("right-running-head", {}, function ()
+         SILE.call("book:right-running-head-font", {}, function ()
+            SILE.call("raggedleft", {}, function ()
+               SILE.typesetter:typeset("附录")
+            end)
+         end)
+      end)
+
+      SILE.typesetter:leaveHmode()
+      SILE.call("center", {}, function ()
+         SILE.call("font", { family = "黑体", weight = 700, size = "16pt" }, function ()
+            SILE.typesetter:typeset("附　　录")
+         end)
+      end)
+      SILE.call("bigskip")
+
+      SILE.scratch.fduthesis.appendixCounter = 0
 
       SILE.settings:temporarily(function ()
          SILE.settings:set("document.baselineskip", SILE.types.node.vglue("20pt"))
-         SILE.call("font", { family = "SimSun", size = "12pt" }, function ()
+         SILE.call("font", { family = "宋体", size = "12pt" }, function ()
             SILE.process(content)
             SILE.call("par")
          end)
       end)
    end, "Appendix section")
 
+   self:registerCommand("fdu:appendix-section", function (_, content)
+      SILE.scratch.fduthesis.appendixCounter = (SILE.scratch.fduthesis.appendixCounter or 0) + 1
+      local counter = SILE.scratch.fduthesis.appendixCounter
+      local letter = string.char(64 + counter)
+      local label = "附录 " .. letter
+
+      SILE.call("par")
+      SILE.call("bigskip")
+      SILE.call("goodbreak")
+      SILE.call("noindent")
+      SILE.call("tocentry", { level = 2, number = label }, SU.ast.subContent(content))
+
+      SILE.typesetter:leaveHmode()
+      SILE.call("center", {}, function ()
+         SILE.call("font", { family = "黑体", weight = 700, size = "14pt" }, function ()
+            SILE.typesetter:typeset(label .. "　")
+            SILE.process(content)
+         end)
+      end)
+      SILE.call("par")
+      SILE.call("medskip")
+      SILE.call("noindent")
+   end, "Appendix sub-section (A, B, C...)")
+
    -- =========================================================================
-   -- Override chapter command for Chinese style
+   -- Chapter command (Chinese style)
    -- =========================================================================
 
    self:registerCommand("chapter", function (options, content)
       SILE.call("par")
       SILE.call("open-spread", { double = false })
       SILE.call("noindent")
-      SILE.scratch.headers.right = nil
       SILE.call("set-counter", { id = "footnote", value = 1 })
 
       local numbering = SU.boolean(options.numbering, true)
@@ -753,23 +879,16 @@ function class:registerCommands ()
          SILE.call("tocentry", { level = 1, number = chineseLabel or "" }, SU.ast.subContent(content))
       end
 
-      -- Chapter number line
+      SILE.typesetter:leaveHmode()
       SILE.call("center", {}, function ()
          SILE.call("book:chapterfont", {}, function ()
             if numbering then
-               SILE.typesetter:typeset(chineseLabel)
+               SILE.typesetter:typeset(chineseLabel .. "　")
             end
-         end)
-      end)
-
-      -- Chapter title line
-      SILE.call("center", {}, function ()
-         SILE.call("book:chapterfont", {}, function ()
             SILE.process(content)
          end)
       end)
 
-      -- Set left running head
       SILE.call("left-running-head", {}, function ()
          SILE.call("book:left-running-head-font", {}, function ()
             if numbering then
@@ -778,8 +897,17 @@ function class:registerCommands ()
             SILE.process(content)
          end)
       end)
+      SILE.call("right-running-head", {}, function ()
+         SILE.call("book:right-running-head-font", {}, function ()
+            SILE.call("raggedleft", {}, function ()
+               if numbering then
+                  SILE.typesetter:typeset(chineseLabel .. "　")
+               end
+               SILE.process(content)
+            end)
+         end)
+      end)
 
-      SILE.call("nofoliothispage")
       SILE.call("novbreak")
       SILE.call("bigskip")
       SILE.call("novbreak")
@@ -787,7 +915,7 @@ function class:registerCommands ()
    end, "Start a new chapter (Chinese style)")
 
    -- =========================================================================
-   -- Override section command
+   -- Section command
    -- =========================================================================
 
    self:registerCommand("section", function (options, content)
@@ -817,19 +945,17 @@ function class:registerCommands ()
          SILE.process(content)
       end)
 
-      if not SILE.scratch.counters.folio.off then
-         SILE.call("right-running-head", {}, function ()
-            SILE.call("book:right-running-head-font", {}, function ()
-               SILE.call("raggedleft", {}, function ()
-                  if numbering then
-                     SILE.call("show-multilevel-counter", { id = "sectioning", level = 2 })
-                     SILE.typesetter:typeset(" ")
-                  end
-                  SILE.process(content)
-               end)
+      SILE.call("right-running-head", {}, function ()
+         SILE.call("book:right-running-head-font", {}, function ()
+            SILE.call("raggedleft", {}, function ()
+               if numbering then
+                  SILE.call("show-multilevel-counter", { id = "sectioning", level = 2 })
+                  SILE.typesetter:typeset("　")
+               end
+               SILE.process(content)
             end)
          end)
-      end
+      end)
 
       SILE.call("par")
       SILE.call("novbreak")
@@ -839,7 +965,7 @@ function class:registerCommands ()
    end, "Start a new section")
 
    -- =========================================================================
-   -- Override subsection command
+   -- Subsection command
    -- =========================================================================
 
    self:registerCommand("subsection", function (options, content)

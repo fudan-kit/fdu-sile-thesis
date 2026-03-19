@@ -2,57 +2,29 @@
 
 \begin{fdu:bibliography}
 
-[1] Devlin J, Chang M W, Lee K, et al. BERT: Pre-training of Deep Bidirectional
-Transformers for Language Understanding[C]. Proceedings of NAACL-HLT, 2019: 4171-4186.
+[1] Cetz S. SILE: Simon's Improved Layout Engine[EB/OL]. https://sile-typesetter.org, 2024.
 
-[2] Vaswani A, Shazeer N, Parmar N, et al. Attention Is All You Need[C]. Advances in
-Neural Information Processing Systems, 2017: 5998-6008.
+[2] Knuth D E. The TeXbook[M]. Boston: Addison-Wesley, 1986.
 
-[3] Radford A, Wu J, Child R, et al. Language Models are Unsupervised Multitask
-Learners[J]. OpenAI Blog, 2019, 1(8): 9.
+[3] Knuth D E. Digital Typography[M]. Stanford: CSLI Publications, 1999.
 
-[4] Liu Y, Ott M, Goyal N, et al. RoBERTa: A Robustly Optimized BERT Pretraining
-Approach[J]. arXiv preprint arXiv:1907.11692, 2019.
+[4] Hàn Thế Thành. Micro-typographic Extensions to the TeX Typesetting System[D]. Brno: Masaryk University, 2006.
 
-[5] Sun Y, Wang S, Li Y, et al. ERNIE: Enhanced Representation through Knowledge
-Integration[J]. arXiv preprint arXiv:1904.09223, 2019.
+[5] 复旦大学研究生院. 复旦大学博士、硕士学位论文规范（2024年10月修订版）[S]. 上海: 复旦大学, 2024.
 
-[6] Cui Y, Che W, Liu T, et al. Pre-Training with Whole Word Masking for Chinese
-BERT[J]. IEEE/ACM Transactions on Audio, Speech, and Language Processing, 2021,
-29: 3504-3514.
+[6] 中华人民共和国国家质量监督检验检疫总局. GB/T 7714—2015 信息与文献　参考文献著录规则[S]. 北京: 中国标准出版社, 2015.
 
-[7] Raffel C, Shazeer N, Roberts A, et al. Exploring the Limits of Transfer Learning
-with a Unified Text-to-Text Transformer[J]. Journal of Machine Learning Research,
-2020, 21(1): 5485-5551.
+[7] Ierusalimschy R. Programming in Lua[M]. 4th ed. Rio de Janeiro: Lua.org, 2016.
 
-[8] Lewis M, Liu Y, Goyal N, et al. BART: Denoising Sequence-to-Sequence Pre-training
-for Natural Language Generation, Translation, and Comprehension[C]. Proceedings of
-ACL, 2020: 7871-7880.
+[8] Unicode Consortium. The Unicode Standard, Version 15.0[S]. Mountain View: Unicode Consortium, 2022.
 
-[9] Brown T B, Mann B, Ryder N, et al. Language Models are Few-Shot Learners[C].
-Advances in Neural Information Processing Systems, 2020, 33: 1877-1901.
+[9] Liang F M. Word Hy-phen-a-tion by Com-put-er[D]. Stanford: Stanford University, 1983.
 
-[10] Xu L, Hu H, Zhang X, et al. CLUE: A Chinese Language Understanding Evaluation
-Benchmark[C]. Proceedings of COLING, 2020: 4762-4772.
+[10] 曾祥东. fduthesis: 复旦大学论文模板[EB/OL]. https://github.com/stone-zeng/fduthesis, 2024.
 
-[11] Bordes A, Usunier N, Garcia-Duran A, et al. Translating Embeddings for Modeling
-Multi-relational Data[C]. Advances in Neural Information Processing Systems, 2013:
-2787-2795.
+[11] Lamport L. LaTeX: A Document Preparation System[M]. 2nd ed. Boston: Addison-Wesley, 1994.
 
-[12] Ji S, Pan S, Cambria E, et al. A Survey on Knowledge Graphs: Representation,
-Acquisition, and Applications[J]. IEEE Transactions on Neural Networks and Learning
-Systems, 2022, 33(2): 494-514.
-
-[13] Li Y, Li D, Yin Y, et al. DuIE: A Large-scale Chinese Knowledge Graph
-Relation Extraction Dataset[C]. Natural Language Processing and Chinese Computing,
-2019: 811-819.
-
-[14] Zhang Y, Zhong V, Chen D, et al. Position-aware Attention and Supervised Data
-Improve Slot Filling[C]. Proceedings of EMNLP, 2017: 35-45.
-
-[15] Chen T, Kornblith S, Norouzi M, et al. A Simple Framework for Contrastive
-Learning of Visual Representations[C]. International Conference on Machine Learning,
-2020: 1597-1607.
+[12] 刘海洋. LaTeX 入门[M]. 北京: 电子工业出版社, 2013.
 
 \end{fdu:bibliography}
 
