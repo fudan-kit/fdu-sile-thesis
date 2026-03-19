@@ -38,7 +38,7 @@ img 命令支持多种尺寸控制方式：
 
 \center{\img[src=fudan-name.pdf, height=30pt]}
 
-\center{\font[family=宋体, size=10.5pt]{图 3.1　复旦大学校名标识}}
+\center{\font[family=SimSun, size=10.5pt]{图 3.1　复旦大学校名标识}}
 
 \section{表格排版}
 
@@ -46,7 +46,7 @@ img 命令支持多种尺寸控制方式：
 
 在学术论文中，表格是展示实验数据的重要方式。表格标题放在表格上方，格式为"表 X.Y 标题文字"。以下展示一个简单的数据展示格式：
 
-\center{\font[family=黑体, size=10.5pt]{表 3.1　不同方法的性能比较}}
+\center{\font[family=SimHei, size=10.5pt]{表 3.1　不同方法的性能比较}}
 
 \medskip
 
@@ -54,7 +54,7 @@ img 命令支持多种尺寸控制方式：
 
 \smallskip
 
-\noindent\font[family=黑体, size=10.5pt]{方法　　　　　准确率　　　　召回率　　　　F1 值}
+\noindent\font[family=SimHei, size=10.5pt]{方法　　　　　准确率　　　　召回率　　　　F1 值}
 
 \smallskip
 
@@ -62,11 +62,11 @@ img 命令支持多种尺寸控制方式：
 
 \smallskip
 
-\noindent\font[family=宋体, size=10.5pt]{方法一　　　　92.5　　　　　88.3　　　　　90.4}
+\noindent\font[family=SimSun, size=10.5pt]{方法一　　　　92.5　　　　　88.3　　　　　90.4}
 
-\noindent\font[family=宋体, size=10.5pt]{方法二　　　　90.1　　　　　91.2　　　　　90.6}
+\noindent\font[family=SimSun, size=10.5pt]{方法二　　　　90.1　　　　　91.2　　　　　90.6}
 
-\noindent\font[family=宋体, size=10.5pt]{方法三　　　　93.8　　　　　87.5　　　　　90.5}
+\noindent\font[family=SimSun, size=10.5pt]{方法三　　　　93.8　　　　　87.5　　　　　90.5}
 
 \smallskip
 
@@ -80,7 +80,7 @@ img 命令支持多种尺寸控制方式：
 
 对于包含更多列的表格，可以通过调整全角空格的数量来对齐列数据：
 
-\center{\font[family=黑体, size=10.5pt]{表 3.2　模型在不同数据集上的实验结果}}
+\center{\font[family=SimHei, size=10.5pt]{表 3.2　模型在不同数据集上的实验结果}}
 
 \medskip
 
@@ -88,7 +88,7 @@ img 命令支持多种尺寸控制方式：
 
 \smallskip
 
-\noindent\font[family=黑体, size=10.5pt]{模型　　　　　　数据集 A　　　数据集 B　　　数据集 C}
+\noindent\font[family=SimHei, size=10.5pt]{模型　　　　　　数据集 A　　　数据集 B　　　数据集 C}
 
 \smallskip
 
@@ -96,13 +96,13 @@ img 命令支持多种尺寸控制方式：
 
 \smallskip
 
-\noindent\font[family=宋体, size=10.5pt]{基线模型　　　　85.2　　　　　82.7　　　　　88.1}
+\noindent\font[family=SimSun, size=10.5pt]{基线模型　　　　85.2　　　　　82.7　　　　　88.1}
 
-\noindent\font[family=宋体, size=10.5pt]{改进模型一　　　87.6　　　　　85.3　　　　　89.5}
+\noindent\font[family=SimSun, size=10.5pt]{改进模型一　　　87.6　　　　　85.3　　　　　89.5}
 
-\noindent\font[family=宋体, size=10.5pt]{改进模型二　　　89.1　　　　　86.8　　　　　91.2}
+\noindent\font[family=SimSun, size=10.5pt]{改进模型二　　　89.1　　　　　86.8　　　　　91.2}
 
-\noindent\font[family=宋体, size=10.5pt]{本文方法　　　　91.3　　　　　88.5　　　　　92.7}
+\noindent\font[family=SimSun, size=10.5pt]{本文方法　　　　91.3　　　　　88.5　　　　　92.7}
 
 \smallskip
 
@@ -130,7 +130,7 @@ img 命令支持多种尺寸控制方式：
 
 \center{\img[src=fudan-name.pdf, height=50pt]}
 
-\center{\font[family=宋体, size=10.5pt]{图 3.2　复旦大学校名标识（放大版）}}
+\center{\font[family=SimSun, size=10.5pt]{图 3.2　复旦大学校名标识（放大版）}}
 
 \medskip
 
@@ -142,17 +142,17 @@ img 命令支持多种尺寸控制方式：
 
 \center{\img[src=fudan-name.pdf, height=30pt]}
 
-\center{\font[family=宋体, size=10.5pt]{（a）标准尺寸}}
+\center{\font[family=SimSun, size=10.5pt]{（a）标准尺寸}}
 
 \bigskip
 
 \center{\img[src=fudan-name.pdf, height=50pt]}
 
-\center{\font[family=宋体, size=10.5pt]{（b）放大尺寸}}
+\center{\font[family=SimSun, size=10.5pt]{（b）放大尺寸}}
 
 \medskip
 
-\center{\font[family=宋体, size=10.5pt]{图 3.3　不同尺寸的校名标识对比}}
+\center{\font[family=SimSun, size=10.5pt]{图 3.3　不同尺寸的校名标识对比}}
 
 \section{排版建议}
 

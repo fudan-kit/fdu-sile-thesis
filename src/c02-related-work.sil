@@ -66,6 +66,54 @@ SILE 支持脚注功能\footnote{这是一个脚注示例，脚注内容会自�
 
 需要注意的是，SILE 使用反斜杠作为命令起始字符。如果要在文本中使用百分号，需要注意它在 SILE 中是注释标记。大括号在 SILE 中用于界定参数范围。
 
+\section{如何加粗、斜体等不同的字体}
+
+本节介绍论文写作中常用的字体格式设置方法，包括加粗、斜体及其组合使用。
+
+\subsection{加粗文本}
+
+使用 fdu:bold 命令可以将文本设置为粗体。例如：
+
+\begin{fdu:bold}这段文字使用 fdu:bold 命令设置为粗体显示。粗体常用于正文中需要强调的重要内容。\end{fdu:bold}
+
+在标题中，模板已自动应用粗体格式，因此通常只在正文中需要强调时使用加粗命令。
+
+\subsection{斜体文本}
+
+使用 fdu:italic 命令可以将文本设置为斜体。斜体常用于外文术语、变量名等场景。例如：
+
+\begin{fdu:italic}This text is displayed in italic style using the fdu:italic command.\end{fdu:italic}
+
+注意，中文字体通常没有原生斜体设计，使用斜体时系统会对字形进行倾斜变换。建议中文强调使用楷体（fdu:kaiti）或加粗（fdu:bold），而斜体主要用于英文内容。
+
+\subsection{粗斜体组合}
+
+使用 fdu:bolditalic 命令可以同时应用粗体和斜体效果。例如：
+
+\begin{fdu:bolditalic}This text is displayed in bold italic style using fdu:bolditalic.\end{fdu:bolditalic}
+
+\subsection{字体组合使用示例}
+
+在实际写作中，可能需要同时指定字体族和样式。以下是一些常用的字体组合示例：
+
+黑体加粗：\font[family=SimHei,weight=700]{这段文字使用黑体加粗显示，适合标题和强调。}
+
+楷体文本：\begin{fdu:kaiti}楷体文本示例，常用于引用或中文强调。\end{fdu:kaiti}
+
+仿宋文本：\begin{fdu:fangsong}仿宋文本示例，常用于公文格式。\end{fdu:fangsong}
+
+代码文本：\begin{fdu:code}print("Hello, SILE!")\end{fdu:code}
+
+\subsection{字号与字体样式的组合}
+
+可以通过 font 命令同时设置字体族、字号和样式。例如：
+
+\font[family=SimSun,size=14pt,weight=700]{这是四号宋体加粗文本。}
+
+\font[family=SimHei,size=10.5pt]{这是五号黑体文本。}
+
+常用字号对照：三号 16pt，小三号 15pt，四号 14pt，小四号 12pt，五号 10.5pt，小五号 9pt。在实际论文写作中，正文默认使用小四号（12pt）宋体，一般无需手动设置字号。
+
 \section{本章小结}
 
 本章介绍了模板提供的基本排版功能，包括字体设置、段落格式、列表编排、脚注使用和特殊字符处理。这些功能涵盖了论文写作中最常用的排版需求。下一章将介绍图表排版的方法。

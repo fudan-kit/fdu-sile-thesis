@@ -20,7 +20,7 @@
 
 以下是附录中表格的排版示例：
 
-\center{\font[family=黑体, size=10.5pt]{表 A.1　补充实验结果}}
+\center{\font[family=SimHei, size=10.5pt]{表 A.1　补充实验结果}}
 
 \medskip
 
@@ -28,7 +28,7 @@
 
 \smallskip
 
-\noindent\font[family=黑体, size=10.5pt]{参数设置　　　　实验一　　　　实验二　　　　实验三}
+\noindent\font[family=SimHei, size=10.5pt]{参数设置　　　　实验一　　　　实验二　　　　实验三}
 
 \smallskip
 
@@ -36,11 +36,11 @@
 
 \smallskip
 
-\noindent\font[family=宋体, size=10.5pt]{设置 A　　　　　85.2　　　　　87.3　　　　　86.1}
+\noindent\font[family=SimSun, size=10.5pt]{设置 A　　　　　85.2　　　　　87.3　　　　　86.1}
 
-\noindent\font[family=宋体, size=10.5pt]{设置 B　　　　　88.7　　　　　89.1　　　　　88.5}
+\noindent\font[family=SimSun, size=10.5pt]{设置 B　　　　　88.7　　　　　89.1　　　　　88.5}
 
-\noindent\font[family=宋体, size=10.5pt]{设置 C　　　　　91.3　　　　　90.8　　　　　91.0}
+\noindent\font[family=SimSun, size=10.5pt]{设置 C　　　　　91.3　　　　　90.8　　　　　91.0}
 
 \smallskip
 
