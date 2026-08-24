@@ -1,31 +1,17 @@
 \begin{document}
-
 \begin{fdu:bibliography}
 
-[1] Cetz S. SILE: Simon's Improved Layout Engine[EB/OL]. https://sile-typesetter.org, 2024.
+[1] 复旦大学研究生院. 复旦大学博士、硕士学位论文规范（2026 年 6 月修订版）[S]. 上海: 复旦大学, 2026.
 
-[2] Knuth D E. The TeXbook[M]. Boston: Addison-Wesley, 1986.
+[2] SILE AUTHORS. SILE: Simon's Improved Layout Engine[EB/OL]. https://sile-typesetter.org, 2026-08-24.
 
-[3] Knuth D E. Digital Typography[M]. Stanford: CSLI Publications, 1999.
+[3] KNUTH D E. The TeXbook[M]. Boston: Addison-Wesley, 1986.
 
-[4] Hàn Thế Thành. Micro-typographic Extensions to the TeX Typesetting System[D]. Brno: Masaryk University, 2006.
+[4] IERUSALIMSCHY R. Programming in Lua[M]. 4th ed. Rio de Janeiro: Lua.org, 2016.
 
-[5] 复旦大学研究生院. 复旦大学博士、硕士学位论文规范（2024年10月修订版）[S]. 上海: 复旦大学, 2024.
+[5] 中华人民共和国国家质量监督检验检疫总局, 中国国家标准化管理委员会. GB/T 7714—2015 信息与文献　参考文献著录规则[S]. 北京: 中国标准出版社, 2015.
 
-[6] 中华人民共和国国家质量监督检验检疫总局. GB/T 7714—2015 信息与文献　参考文献著录规则[S]. 北京: 中国标准出版社, 2015.
-
-[7] Ierusalimschy R. Programming in Lua[M]. 4th ed. Rio de Janeiro: Lua.org, 2016.
-
-[8] Unicode Consortium. The Unicode Standard, Version 15.0[S]. Mountain View: Unicode Consortium, 2022.
-
-[9] Liang F M. Word Hy-phen-a-tion by Com-put-er[D]. Stanford: Stanford University, 1983.
-
-[10] 曾祥东. fduthesis: 复旦大学论文模板[EB/OL]. https://github.com/stone-zeng/fduthesis, 2024.
-
-[11] Lamport L. LaTeX: A Document Preparation System[M]. 2nd ed. Boston: Addison-Wesley, 1994.
-
-[12] 刘海洋. LaTeX 入门[M]. 北京: 电子工业出版社, 2013.
+[6] ZENG X. fduthesis: LaTeX thesis template for Fudan University[EB/OL]. https://github.com/stone-zeng/fduthesis, 2026-08-24.
 
 \end{fdu:bibliography}
-
 \end{document}

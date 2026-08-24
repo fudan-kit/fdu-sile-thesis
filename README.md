@@ -1,242 +1,130 @@
-# fduthesis-sile：复旦大学学位论文 SILE 模板
+# 复旦大学学位论文 SILE 模板
 
-基于 [SILE](https://sile-typesetter.org/) 排版引擎的复旦大学学位论文模板，参照《复旦大学博士、硕士学位论文规范（2024年10月修订版）》和 [fduthesis](https://github.com/stone-zeng/fduthesis) LaTeX 模板设计。
+这是一个可直接编译的复旦大学博士、硕士学位论文 SILE 模板。示例论文《复旦大学学位论文 SILE 排版模板教程》同时也是完整使用手册。
 
-支持本科毕业论文、硕士学位论文和博士学位论文。
+模板依据《复旦大学博士、硕士学位论文规范（2026 年 6 月修订版）》实现，并以 `fduthesis-2026` v0.9a-2026.1 的 XeLaTeX 输出为版式基准。覆盖硕士、博士论文的学术学位与专业学位封面。本科 `bachelor` 选项只是兼容扩展，不代表已经覆盖本科毕业设计的独立规范。
 
-## 项目结构
+## 已实现内容
 
-```
-fdu-sile-thesis/
-├── classes/
-│   └── fduthesis.lua          # 复旦大学论文文档类（核心文件）
-├── paper.sil                  # 主文档入口（示例论文）
-├── src/
-│   ├── abstract-cn.sil        # 中文摘要
-│   ├── abstract-en.sil        # 英文摘要
-│   ├── c01-introduction.sil   # 第一章 绪论
-│   ├── c02-related-work.sil   # 第二章 相关工作
-│   ├── c03-method.sil         # 第三章 方法
-│   ├── c04-experiment.sil     # 第四章 实验与分析
-│   ├── c05-conclusion.sil     # 第五章 总结与展望
-│   ├── bibliography.sil       # 参考文献
-│   └── acknowledgements.sil   # 致谢
-├── fudan-name.pdf             # 复旦大学校名图片
-├── README.md
-└── LICENSE
-```
+- A4 页面、与 `fduthesis-2026` 对齐的版心、正文小四号与 20 磅行距
+- 2026 版规范封面字段，以及涉密、同等学力、英文项目可选标记
+- 指导小组、目录、中英文摘要、插图清单、附表清单
+- 正文从右页开始、每章另起页、中文章号与多级目录
+- 双面页眉、前置罗马数字页码、正文阿拉伯数字页码
+- 按章编号的图片和表格题注，自动生成 `.lof` 与 `.lot`
+- 参考文献、附录、致谢
+- 末尾同页排版的独创性声明与使用授权声明
+- PDF 标题、作者和主题元数据
 
-## 功能特性
+## 环境
 
-- 支持博士（`doctor`）、硕士（`master`）、本科（`bachelor`）三种论文类型
-- 支持学术学位（`academic`）和专业学位（`professional`）分类
-- 自动生成符合规范的封面页
-- 学位论文独创性声明与使用授权声明页
-- 扉页（指导小组成员名单）
-- 中英文摘要页（含关键词、中图分类号）
-- 自动生成中文目录（"第X章"格式编号）
-- 中文章节标题格式（第一章、1.1、1.1.1）
-- 前置部分罗马数字页码、正文部分阿拉伯数字页码
-- 双面打印支持（左右页眉）
-- 参考文献、附录、致谢等后置部分
-- A4纸张，Word 默认页边距（上下2.54cm，左右3.18cm）
-- 正文宋体小四号（12pt），20磅行距
+模板针对 SILE 0.15 系列开发，当前验证版本为 `0.15.13.r8-gf69069f`。字体与 `fduthesis-2026` 在 Linux 下的默认配置一致：
 
-## 环境要求
+- XITS：拉丁正文、数字和数学风格文字
+- FandolSong：中文正文及其粗体
+- FandolHei：中文标题及其粗体
+- FandolKai、FandolFang：楷体与仿宋命令
+- TeX Gyre Heros、TeX Gyre Cursor：英文无衬线标题与代码块
 
-- [SILE](https://sile-typesetter.org/) >= 0.15.0
-- 系统字体：
-  - **SimSun**（宋体）— 正文字体
-  - **SimHei**（黑体）— 标题字体
-  - **KaiTi**（楷体）— 强调字体（可选）
-  - **FangSong**（仿宋）— 可选
-  - **Times New Roman** — 英文字体
-  - **Hack** — 代码字体（可选）
+`config/fontconfig-texlive.conf` 将 TeX Live 的 OpenType 字体目录提供给 SILE，并修正 TeX Live 2025 Fandol Regular/Bold 在 fontconfig 中权重相同的问题。文档类还包含针对 SILE 0.15 混合字体回退顺序的局部修正，保证“2026年6月”等中英数字混排不会被重新排序。字体全部嵌入最终 PDF。
 
-### 安装 SILE
-
-Ubuntu/Debian:
-```bash
-sudo add-apt-repository ppa:sile-typesetter/sile
-sudo apt update
-sudo apt install sile
-```
-
-其他系统请参考 [SILE 安装文档](https://github.com/sile-typesetter/sile/wiki/Installation)。
-
-### 安装中文字体
-
-如果系统没有中文字体，可安装文泉驿或思源字体：
-```bash
-sudo apt install fonts-wqy-microhei fonts-wqy-zenhei
-```
-
-或安装 Windows 字体后配置字体名映射。
-
-## 使用方法
-
-### 1. 基本使用
+检查环境：
 
 ```bash
-# 克隆项目
-git clone https://github.com/your-username/fdu-sile-thesis.git
-cd fdu-sile-thesis
-
-# 编译论文（需运行两次以生成正确的目录页码）
-sile paper.sil
-sile paper.sil
+sile --version
+FONTCONFIG_FILE="$PWD/config/fontconfig-texlive.conf" fc-match XITS
+FONTCONFIG_FILE="$PWD/config/fontconfig-texlive.conf" fc-match FandolSong
+FONTCONFIG_FILE="$PWD/config/fontconfig-texlive.conf" fc-match FandolHei
 ```
 
-### 2. 修改论文类型
+## 编译
 
-在 `paper.sil` 的文档声明中修改选项：
+```bash
+make
+```
+
+Makefile 固定运行三轮 SILE。第一轮收集目录和图表位置，第二轮填入页码，第三轮稳定因目录变化引起的分页。也可手动执行：
+
+```bash
+FONTCONFIG_FILE="$PWD/config/fontconfig-texlive.conf" sile paper.sil
+FONTCONFIG_FILE="$PWD/config/fontconfig-texlive.conf" sile paper.sil
+FONTCONFIG_FILE="$PWD/config/fontconfig-texlive.conf" sile paper.sil
+```
+
+输出为 `paper.pdf`。`make clean` 删除 `.toc`、`.lof` 与 `.lot`，保留 PDF；`make distclean` 还会删除 PDF。
+
+## 开始写论文
+
+在 `paper.sil` 开头选择类型：
 
 ```sil
-% 博士学位论文（学术学位）
-\begin[class=fduthesis, type=doctor, degree=academic]{document}
+% 硕士学术学位
+\begin[class=fduthesis, type=master, degree=academic]{document}
 
-% 硕士学位论文（专业学位）
+% 硕士专业学位
 \begin[class=fduthesis, type=master, degree=professional]{document}
 
-% 本科毕业论文
-\begin[class=fduthesis, type=bachelor]{document}
-```
-
-### 3. 设置论文元数据
-
-在 `paper.sil` 中使用以下命令设置论文信息：
-
-```sil
-\fdu:schoolCode{10246}
-\fdu:studentId{12345678901}
-\fdu:title{论文中文标题}
-\fdu:titleEn{Thesis English Title}
-\fdu:author{作者姓名}
-\fdu:supervisor{导师姓名 教授}
-\fdu:department{院系名称}
-\fdu:major{专业名称}
-\fdu:date{2026年6月}
-\fdu:keywordsCn{关键词1，关键词2，关键词3}
-\fdu:keywordsEn{Keyword1, Keyword2, Keyword3}
-\fdu:clc{TP391}
-```
-
-### 4. 文档结构
-
-标准论文的文档结构如下：
-
-```sil
+% 博士学术学位
 \begin[class=fduthesis, type=doctor, degree=academic]{document}
-
-% 元数据设置
-\fdu:title{...}
-% ... 其他元数据
-
-% 封面
-\fdu:makecover
-
-% 独创性声明
-\fdu:declaration
-
-% 前置部分
-\fdu:frontmatter
-\begin{fdu:instructors}
-  指导小组成员列表...
-\end{fdu:instructors}
-\tableofcontents
-\include[src=src/abstract-cn.sil]
-\include[src=src/abstract-en.sil]
-
-% 正文
-\fdu:mainmatter
-\include[src=src/c01-introduction.sil]
-% ... 其他章节
-
-% 后置部分
-\fdu:backmatter
-\include[src=src/bibliography.sil]
-\include[src=src/acknowledgements.sil]
-
-\end{document}
 ```
 
-## 命令参考
-
-### 元数据命令
-
-| 命令 | 说明 |
-|------|------|
-| `\fdu:title{...}` | 中文标题 |
-| `\fdu:titleEn{...}` | 英文标题 |
-| `\fdu:author{...}` | 作者姓名 |
-| `\fdu:supervisor{...}` | 指导教师 |
-| `\fdu:department{...}` | 院系 |
-| `\fdu:major{...}` | 专业 |
-| `\fdu:date{...}` | 完成日期 |
-| `\fdu:studentId{...}` | 学号 |
-| `\fdu:schoolCode{...}` | 学校代码（默认10246） |
-| `\fdu:keywordsCn{...}` | 中文关键词 |
-| `\fdu:keywordsEn{...}` | 英文关键词 |
-| `\fdu:clc{...}` | 中图分类号 |
-| `\fdu:secretLevel{...}` | 密级 |
-| `\fdu:secretYear{...}` | 保密年限 |
-
-### 结构命令
-
-| 命令 | 说明 |
-|------|------|
-| `\fdu:makecover` | 生成封面 |
-| `\fdu:declaration` | 独创性声明和使用授权声明 |
-| `\fdu:frontmatter` | 开始前置部分（罗马数字页码） |
-| `\fdu:mainmatter` | 开始正文（阿拉伯数字页码） |
-| `\fdu:backmatter` | 开始后置部分 |
-| `\fdu:pdfmetadata` | 设置 PDF 文件元数据 |
-
-### 环境命令
-
-| 命令 | 说明 |
-|------|------|
-| `\begin{fdu:abstract}...\end{fdu:abstract}` | 中文摘要 |
-| `\begin{fdu:abstract-en}...\end{fdu:abstract-en}` | 英文摘要 |
-| `\begin{fdu:instructors}...\end{fdu:instructors}` | 指导小组名单 |
-| `\begin{fdu:bibliography}...\end{fdu:bibliography}` | 参考文献 |
-| `\begin{fdu:acknowledgements}...\end{fdu:acknowledgements}` | 致谢 |
-| `\begin{fdu:appendix}...\end{fdu:appendix}` | 附录 |
-
-### 字体命令
-
-| 命令 | 说明 |
-|------|------|
-| `\fdu:songti{...}` | 宋体 |
-| `\fdu:heiti{...}` | 黑体 |
-| `\fdu:kaiti{...}` | 楷体 |
-| `\fdu:fangsong{...}` | 仿宋 |
-| `\fdu:code{...}` | 代码字体 |
-| `\fdu:emph{...}` | 中文强调（楷体） |
-
-### 章节命令
-
-使用标准的 SILE 章节命令，已自动适配中文格式：
+然后替换主文件中的元数据：
 
 ```sil
-\chapter{章标题}           % 第X章 标题（黑体16pt居中）
-\section{节标题}           % X.X 标题（黑体14pt）
-\subsection{小节标题}      % X.X.X 标题（黑体12pt）
+\fdu:studentId{12345678901}
+\fdu:title{中文论文题目}
+\fdu:titleEn{English Thesis Title}
+\fdu:author{学生姓名}
+\fdu:supervisor{导师姓名　职称}
+\fdu:department{培养单位}
+\fdu:major{学科专业}
+\fdu:date{2026年6月}
+\fdu:clc{TP391}
+\fdu:keywordsCn{关键词一；关键词二；关键词三}
+\fdu:keywordsEn{keyword one; keyword two; keyword three}
 ```
 
-## 注意事项
+按需启用特殊封面标记：
 
-1. **目录需要两次编译**：第一次编译生成 `.toc` 文件，第二次编译才能正确显示目录内容和页码。
-2. **校名图片**：项目自带 `fudan-name.pdf`。如果文件缺失，封面会自动回退为文字"复旦大学"。
-3. **字体依赖**：请确保系统安装了所需的中英文字体。字体名称可能因操作系统而异。
-4. **涉密论文**：使用 `\fdu:secretLevel` 和 `\fdu:secretYear` 命令设置密级信息。
+```sil
+\fdu:secretLevel{秘密}
+\fdu:secretYear{五年}
+\fdu:tongdengxueli{true}
+\fdu:englishProject{true}
+```
 
-## 参考
+公开论文不要设置密级。中文摘要一般为 300 至 1000 字，关键词为 3 至 8 个，论文题目原则上不超过 30 个汉字。
 
-- [复旦大学博士、硕士学位论文规范（2024年10月修订版）](https://gs.fudan.edu.cn)
-- [fduthesis - 复旦大学 LaTeX 论文模板](https://github.com/stone-zeng/fduthesis)
-- [SILE 排版引擎](https://sile-typesetter.org/)
+## 目录结构
+
+```text
+.
+├── classes/fduthesis.lua     文档类与版式命令
+├── config/                   TeX Live 字体的项目私有 fontconfig
+├── assets/fudan-name.pdf     封面校名矢量图
+├── paper.sil                 主文件、元数据与论文结构
+├── src/                      摘要、五章教程及后置材料
+├── Makefile                  三轮 SILE 编译入口
+└── paper.pdf                 编译后的示例教程
+```
+
+完整命令示例请直接阅读 `paper.pdf` 和 `src` 下的源文件。图片使用 `fdu:figure`，表题使用 `fdu:table-caption`；存在图片或表格时，主文件中应保留 `fdu:listoffigures` 和 `fdu:listoftables`。
+
+## 提交前检查
+
+模板不能替代院系审核。正式提交前应确认学校与培养单位没有更新要求，并检查：
+
+- 封面元数据、论文类别和密级
+- 摘要字数与关键词数量
+- 目录及图表清单页码
+- 正文右页起排、各章分页、双面页眉页码
+- 图表清晰度、题注与正文引用
+- 参考文献符合提交时现行 GB/T 7714
+- 声明页位于全文末尾且没有页眉页码
+- 双面打印效果以及线装或热胶装订
+
+推荐同时运行 `pdfinfo paper.pdf`、`pdffonts paper.pdf`，并把所有页面渲染为图片后逐页查看。
 
 ## 许可证
 
-本项目采用 [GNU General Public License v3.0](LICENSE) 许可证。
+本项目采用 [GNU GPL v3.0](LICENSE) 许可证。

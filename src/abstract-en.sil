@@ -1,13 +1,5 @@
 \begin{document}
-
 \begin{fdu:abstract-en}
-
-This document serves as a user guide for the Fudan University thesis typesetting template based on SILE. SILE (Simon's Improved Layout Engine) is a modern typesetting system that inherits the excellent typesetting philosophy of TeX while using Lua as its extension language, offering high flexibility and customizability.
-
-This template is developed based on SILE 0.15.x and strictly follows the "Fudan University Doctoral and Master's Thesis Regulations (Revised October 2024)". It supports the typesetting of both doctoral and master's degree theses, providing complete thesis structure components including cover page, declaration page, table of contents, abstract, main text, bibliography, appendix, and acknowledgements.
-
-This guide provides detailed instructions on template installation and configuration, basic typesetting features, figure and table examples, reference management, and advanced customization options, aiming to help users quickly get started with the template for thesis typesetting.
-
+This thesis presents a SILE template for doctoral and master's theses at Fudan University, while using the sample thesis itself as an executable tutorial. The implementation follows the June 2026 revision of the university specification and uses the XeLaTeX output of fduthesis-2026 v0.9a-2026.1 as a pixel-level layout reference. It covers the cover page, advisory committee, contents, Chinese and English abstracts, lists of figures and tables, main text, references, appendices, acknowledgements, originality statement, and authorization statement. The class uses A4 paper, the same text block as the reference template, 12-point body text, and 20-point leading. XITS provides Latin text and digits, while FandolSong and FandolHei provide Chinese body text and headings. A project-local fontconfig file exposes the TeX Live fonts to SILE and distinguishes the regular and bold Fandol faces correctly. The tutorial explains source syntax, metadata, document structure, figures, three-line tables, notes, references, customization, convergent compilation, a minimal release layout, and final checks. Every example is part of the source that generated this PDF, so the project can be compiled immediately and then adapted for an actual thesis. Authors remain responsible for checking departmental requirements and the final printed copy before submission.
 \end{fdu:abstract-en}
-
 \end{document}

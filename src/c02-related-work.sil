@@ -1,121 +1,94 @@
 \begin{document}
+\chapter{SILE 源文件与基本排版}
 
-\chapter{基本排版功能}
+\section{命令、选项与内容}
 
-\section{文本格式设置}
+SILE 的输入语法由反斜杠命令、方括号选项和花括号内容组成。例如下面的命令把一段文字设置为 14 磅：
 
-\subsection{字体命令}
+\begin[type=verbatim]{raw}
+\font[size=14pt]{一段文字}
+\end{raw}
 
-本模板提供了多个字体命令，方便用户在正文中切换字体样式。以下是各字体命令的说明：
+环境适合包围较长内容。\fdu:code{document} 环境创建文档，\fdu:code{fdu:abstract} 环境创建中文摘要。百分号开始一行注释。源文件使用 UTF-8 编码，中文标点可以直接输入。
 
-宋体（SimSun）是正文的默认字体，无需特别指定。如需在其他字体环境中切换回宋体，可使用 fdu:songti 命令。
+\section{文档与分文件}
 
-\begin{fdu:heiti}黑体（SimHei）常用于标题和强调内容。本段文字使用 fdu:heiti 命令设置为黑体显示。\end{fdu:heiti}
+主文件的最小骨架如下。class 选项指定本项目的文档类，type 与 degree 决定封面类别。
 
-\begin{fdu:kaiti}楷体（KaiTi）常用于引用和中文强调。本段文字使用 fdu:kaiti 命令设置为楷体显示。\end{fdu:kaiti}
+\begin[type=verbatim]{raw}
+\begin[class=fduthesis,
+  type=master,
+  degree=academic]{document}
+\fdu:title{论文题目}
+\fdu:makecover
+\fdu:mainmatter
+\chapter{绪论}
+正文内容。
+\end{document}
+\end{raw}
 
-\begin{fdu:fangsong}仿宋（FangSong）常用于公文和特定格式文本。本段文字使用 fdu:fangsong 命令设置为仿宋显示。\end{fdu:fangsong}
+实际论文宜按章拆分，并在主文件中使用 include 命令引入 \fdu:code{src/c01-introduction.sil}。本项目中的分文件也使用 document 环境，SILE 在 include 时会处理其中内容，而不会重新建立文档类。
 
-代码字体使用 fdu:code 命令，适合显示代码片段或技术术语，如 \begin{fdu:code}function hello()\end{fdu:code} 这样的内联代码。
+\section{段落与间距}
 
-\subsection{字号设置}
+空行结束一个段落。模板默认首行缩进 2 em、正文小四号、基线间距 20 磅，不需要用全角空格手工缩进。noindent 命令必须出现在段落内容之前；smallskip、medskip 与 bigskip 命令可以插入少量竖直间距，但正文通常应依赖统一样式。
 
-SILE 使用 font 命令的 size 参数来设置字号。常用的字号对照如下：三号对应 16pt，小三号对应 15pt，四号对应 14pt，小四号对应 12pt，五号对应 10.5pt，小五号对应 9pt。
+\section{字体与强调}
 
-本模板正文默认使用小四号（12pt）宋体。章标题使用三号（16pt）黑体，节标题使用四号（14pt）黑体，小节标题使用小四号（12pt）黑体。
+正文中的拉丁文字和数字保持 XITS，汉字回退到 FandolSong；标题使用 FandolHei。模板另提供 \fdu:code{fdu:kaiti}、\fdu:code{fdu:fangsong}、\fdu:code{fdu:bold}、\fdu:code{fdu:italic} 与 \fdu:code{fdu:code}。
 
-\section{段落格式}
+\fdu:kaiti{这是一段楷体示例，适合中文引文或有限度的强调。}
 
-\subsection{段落缩进}
+英文术语可写成 \fdu:italic{OpenType shaping}，内联文件名可写成 \fdu:code{paper.sil}。不要在章节正文中随意改字号或字体，以免破坏规范的一致性。
 
-本模板默认设置首行缩进为 2 个中文字符宽度（2em）。这符合中文排版的传统习惯，也满足复旦大学论文规范的要求。每个新段落会自动应用首行缩进，无需手动设置。
+\section{列表}
 
-如果需要取消某段的缩进，可以使用 noindent 命令。这在章节标题后的第一段或特殊排版场景中非常有用。
+模板加载了 lists 包。有序列表与无序列表不需要手工维护编号：
 
-\subsection{段间距与行间距}
+\begin{enumerate}
+\item{先填写主文件中的论文元数据。}
+\item{再按章节编辑 src 目录中的源文件。}
+\item{最后运行三轮编译并检查 PDF。}
+\end{enumerate}
 
-模板设置了合适的基线间距（20pt），确保行间距符合论文规范要求。段落之间使用标准的段间距，段落通过 par 命令分隔。
+\begin{itemize}
+\item{列表项可以包含中文和英文；}
+\item{嵌套列表应节制使用；}
+\item{论文中的论证通常仍以完整段落为主。}
+\end{itemize}
 
-需要额外的垂直间距时，可以使用以下命令：smallskip 添加约 3pt 的小间距，medskip 添加约 6pt 的中等间距，bigskip 添加约 12pt 的大间距。
+对应源代码是：
 
-\section{列表与编号}
+\begin[type=verbatim]{raw}
+\begin{enumerate}
+  \item{第一项}
+  \item{第二项}
+\end{enumerate}
+\end{raw}
 
-在 SILE 中，有序列表可以通过手动编号的方式实现。每个列表项作为独立段落进行排版。以下是一个列表示例：
+\section{代码块与网址}
 
-（1）第一个列表项的内容。在列表项中可以包含较长的文字，排版系统会自动处理换行。
+教程中的源码块使用 verbatim 类型的 raw 环境。raw 处理器保留反斜杠和花括号，verbatim 处理器保留换行与空格。下面给出一个适合放进这种环境的多行片段：
 
-（2）第二个列表项的内容。注意列表项之间可以有适当的间距。
+\begin[type=verbatim]{raw}
+\font[family=XITS,size=12pt]{
+  Latin text and 12345
+}
+\end{raw}
 
-（3）第三个列表项的内容。列表编号需要手动维护。
-
-无序列表可以使用项目符号来标记：
-
-● 第一个无序列表项。
-
-● 第二个无序列表项。
-
-● 第三个无序列表项。
+长代码行容易超出版心，应主动换行。本模板将代码字号设为 8.5 磅并使用 TeX Gyre Cursor，但它不会替作者自动重排程序结构。
 
 \section{脚注}
 
-SILE 支持脚注功能\footnote{这是一个脚注示例，脚注内容会自动排版在页面底部。}。在正文中需要添加注释的位置使用 footnote 命令，脚注内容将自动排版在页面底部，并使用连续编号。脚注是学术论文中常用的注释方式\footnote{脚注编号在每章内连续递增。}。
+规范建议需要补充说明时优先使用脚注。写作时在正文位置调用脚注命令即可\footnote{脚注会排在当前页底部，并随正文分页。}：
 
-\section{特殊字符与标点}
+\begin[type=verbatim]{raw}
+正文中的论断\footnote{补充说明。}
+\end{raw}
 
-在论文中，经常需要使用一些特殊字符和标点符号。中文排版中常用的标点符号包括：书名号《》、引号""''、破折号——、省略号……、顿号、等。这些标点符号可以直接在源文件中输入，SILE 会正确处理其排版间距。
-
-需要注意的是，SILE 使用反斜杠作为命令起始字符。如果要在文本中使用百分号，需要注意它在 SILE 中是注释标记。大括号在 SILE 中用于界定参数范围。
-
-\section{如何加粗、斜体等不同的字体}
-
-本节介绍论文写作中常用的字体格式设置方法，包括加粗、斜体及其组合使用。
-
-\subsection{加粗文本}
-
-使用 fdu:bold 命令可以将文本设置为粗体。例如：
-
-\begin{fdu:bold}这段文字使用 fdu:bold 命令设置为粗体显示。粗体常用于正文中需要强调的重要内容。\end{fdu:bold}
-
-在标题中，模板已自动应用粗体格式，因此通常只在正文中需要强调时使用加粗命令。
-
-\subsection{斜体文本}
-
-使用 fdu:italic 命令可以将文本设置为斜体。斜体常用于外文术语、变量名等场景。例如：
-
-\begin{fdu:italic}This text is displayed in italic style using the fdu:italic command.\end{fdu:italic}
-
-注意，中文字体通常没有原生斜体设计，使用斜体时系统会对字形进行倾斜变换。建议中文强调使用楷体（fdu:kaiti）或加粗（fdu:bold），而斜体主要用于英文内容。
-
-\subsection{粗斜体组合}
-
-使用 fdu:bolditalic 命令可以同时应用粗体和斜体效果。例如：
-
-\begin{fdu:bolditalic}This text is displayed in bold italic style using fdu:bolditalic.\end{fdu:bolditalic}
-
-\subsection{字体组合使用示例}
-
-在实际写作中，可能需要同时指定字体族和样式。以下是一些常用的字体组合示例：
-
-黑体加粗：\font[family=SimHei,weight=700]{这段文字使用黑体加粗显示，适合标题和强调。}
-
-楷体文本：\begin{fdu:kaiti}楷体文本示例，常用于引用或中文强调。\end{fdu:kaiti}
-
-仿宋文本：\begin{fdu:fangsong}仿宋文本示例，常用于公文格式。\end{fdu:fangsong}
-
-代码文本：\begin{fdu:code}print("Hello, SILE!")\end{fdu:code}
-
-\subsection{字号与字体样式的组合}
-
-可以通过 font 命令同时设置字体族、字号和样式。例如：
-
-\font[family=SimSun,size=14pt,weight=700]{这是四号宋体加粗文本。}
-
-\font[family=SimHei,size=10.5pt]{这是五号黑体文本。}
-
-常用字号对照：三号 16pt，小三号 15pt，四号 14pt，小四号 12pt，五号 10.5pt，小五号 9pt。在实际论文写作中，正文默认使用小四号（12pt）宋体，一般无需手动设置字号。
+模板在每章开始时重置脚注计数。脚注不应承担本应进入正文的关键论证，也不能代替参考文献著录。
 
 \section{本章小结}
 
-本章介绍了模板提供的基本排版功能，包括字体设置、段落格式、列表编排、脚注使用和特殊字符处理。这些功能涵盖了论文写作中最常用的排版需求。下一章将介绍图表排版的方法。
-
+SILE 源文件把内容与命令组合起来；本模板进一步把学校要求封装为高层命令。下一章说明这些命令如何构成一篇完整论文。
 \end{document}

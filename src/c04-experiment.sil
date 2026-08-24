@@ -1,97 +1,84 @@
 \begin{document}
+\chapter{图片、表格与参考文献}
 
-\chapter{参考文献与引用}
+\section{自动编号的图片}
 
-\section{参考文献格式}
+\fdu:code{fdu:figure} 接收 src、caption 和可选的 width。它居中插图，把题注放在图下方，按章生成“图 4-1”形式的编号，并把条目写入插图清单。
 
-\subsection{参考文献规范}
+\begin[type=verbatim]{raw}
+\fdu:figure[
+  src=assets/fudan-name.pdf,
+  width=60mm,
+  caption=复旦大学校名矢量图]
+\end{raw}
 
-根据复旦大学学位论文规范，参考文献的著录格式应符合国家标准 GB/T 7714—2015《信息与文献　参考文献著录规则》的要求。
+下面就是这段命令的实际结果。
 
-常见的参考文献类型及其标识代码包括：专著标记为 [M]、期刊文章标记为 [J]、会议论文标记为 [C]、学位论文标记为 [D]、技术报告标记为 [R]、标准标记为 [S]、电子文献标记为 [EB/OL] 等。
+\fdu:figure[src=assets/fudan-name.pdf,width=60mm,caption=复旦大学校名矢量图]
 
-\subsection{专著格式}
+优先使用 PDF、SVG 等矢量图，位图在最终尺寸下通常应达到 300 DPI。只给 width 或 height 中的一项可保持宽高比。本模板的高层图片命令使用 width；需要特殊布局时可直接调用 SILE 的 img 命令，但应自行保持编号与清单同步。
 
-专著的参考文献格式为：作者. 书名[M]. 版次（第 1 版不标注）. 出版地: 出版者, 出版年.
+\pagebreak
+\section{三线表}
 
-示例：Knuth D E. The TeXbook[M]. Boston: Addison-Wesley, 1986.
+表题位于表格上方。\fdu:code{fdu:table-caption} 负责编号和附表清单，simpletable 包提供实际的行、列结构，fdu:table-rule 绘制三线表横线。
 
-中文专著示例：刘海洋. LaTeX 入门[M]. 北京: 电子工业出版社, 2013.
+\fdu:table-caption[caption=模板核心命令及作用]
+\fdu:table-rule[thickness=0.8pt]
+\begin{fdu:tabular}
+  \fdu:row{\fdu:cell{命令　　　　　　　}\fdu:cell{作用　　　　　　　　　}}
+\end{fdu:tabular}
+\fdu:table-rule[thickness=0.4pt]
+\begin{fdu:tabular}
+  \fdu:row{\fdu:cell{fdu:makecover　　　}\fdu:cell{生成规范封面　　　　　　}}
+  \fdu:row{\fdu:cell{fdu:mainmatter　　 }\fdu:cell{开启正文与阿拉伯页码　　}}
+  \fdu:row{\fdu:cell{fdu:declaration　　}\fdu:cell{生成末尾同页双声明　　　}}
+\end{fdu:tabular}
+\fdu:table-rule[thickness=0.8pt]
 
-\subsection{期刊论文格式}
+其源代码采用真实单元格，而不是靠全角空格猜测列位置：
 
-期刊论文的格式为：作者. 文章标题[J]. 期刊名称, 年份, 卷(期): 起止页码.
+\begin[type=verbatim]{raw}
+\fdu:table-caption[caption=示例表]
+\fdu:table-rule[thickness=0.8pt]
+\begin{fdu:tabular}
+  \fdu:row{
+    \fdu:cell{项目　}
+    \fdu:cell{结果　}}
+\end{fdu:tabular}
+\fdu:table-rule[thickness=0.4pt]
+\begin{fdu:tabular}
+  \fdu:row{
+    \fdu:cell{示例　}
+    \fdu:cell{通过　}}
+\end{fdu:tabular}
+\fdu:table-rule[thickness=0.8pt]
+\end{raw}
 
-示例：Cui Y, Che W, Liu T, et al. Pre-Training with Whole Word Masking for Chinese BERT[J]. IEEE/ACM Transactions on Audio, Speech, and Language Processing, 2021, 29: 3504-3514.
+simpletable 适合短小的无跨行表格。复杂表格、自动换行单元格或跨页表格需要更强的 SILE 表格包或定制 Lua 代码。无论使用哪种实现，都应保持三线表风格、单位明确，并在正文中引用，例如“见表 4-1”。
 
-\subsection{会议论文格式}
+\section{图表清单的生成}
 
-会议论文的格式为：作者. 论文标题[C]. 会议名称, 年份: 起止页码.
+图和表的清单文件分别是 \fdu:code{paper.lof} 与 \fdu:code{paper.lot}。第一轮编译收集题注所在页，第二轮读入清单；若清单改变前置页数，第三轮才得到稳定页码。删除辅助文件后首次编译看到“清单将在再次编译后生成”是正常现象。
 
-示例：Devlin J, Chang M W, Lee K, et al. BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding[C]. Proceedings of NAACL-HLT, 2019: 4171-4186.
+\section{正文引用与脚注}
 
-\subsection{学位论文格式}
+当前模板不强制某一种交叉引用数据库。正文可按最终编号写“如图 4-1 所示”或“见表 4-1”，修改结构后必须复核。补充解释优先用脚注，资料来源则进入参考文献列表，两者用途不同。
 
-学位论文的格式为：作者. 论文题目[D]. 授予单位所在地: 授予单位, 年份.
+\section{参考文献}
 
-示例：Liang F M. Word Hy-phen-a-tion by Com-put-er[D]. Stanford: Stanford University, 1983.
+规范要求按论文提交时现行的 GB/T 7714 著录，并未规定博士或硕士论文必须达到某个固定篇数。本模板的 bibliography 环境使用五号字与 18 磅行距，但条目的著录责任仍在作者。示例采用顺序编码制：
 
-\section{正文中的引用}
+\begin[type=verbatim]{raw}
+\begin{fdu:bibliography}
+[1] 作者. 题名[M]. 出版地: 出版者, 年.
+[2] 作者. 题名[EB/OL]. 网址, 引用日期.
+\end{fdu:bibliography}
+\end{raw}
 
-\subsection{引用方式}
-
-在论文正文中引用参考文献时，应在引用处标注参考文献的序号。序号用方括号括起，如 [1]、[2-5]、[3,7,9] 等形式。
-
-引用可以作为句子的一部分，例如："如文献 [1] 所述，SILE 是一个现代化的排版系统。"也可以放在句末作为标注，例如："深度学习在自然语言处理领域取得了显著进展 [1-3]。"
-
-\subsection{引用注意事项}
-
-在使用参考文献引用时，需要注意以下几点：
-
-（1）参考文献编号应按在正文中首次出现的顺序编排。
-
-（2）同一处引用多篇文献时，各序号间用逗号分隔，连续序号可用短横线连接。
-
-（3）引用他人的观点、数据和结论时，必须标注参考文献，这是学术诚信的基本要求。
-
-（4）参考文献数量应充分，博士论文一般不少于 100 篇，硕士论文一般不少于 50 篇。
-
-\section{交叉引用}
-
-\subsection{章节引用}
-
-在论文中经常需要引用其他章节的内容。推荐使用"如第X章所述"或"详见 X.Y 节"等方式进行章节交叉引用。例如："关于模板的安装方法，详见第一章第三节。"
-
-\subsection{图表引用}
-
-引用图表时，应使用"如图 X.Y 所示"或"见表 X.Y"的格式。图表编号应与被引用的图表编号一致。例如："如图 3.1 所示""从表 3.2 中可以看出"。
-
-\subsection{公式引用}
-
-引用公式时，应使用"式（X.Y）"的格式。例如："将参数代入式（2.1），即可得到最终结果。"
-
-\section{参考文献管理建议}
-
-\subsection{文献收集与整理}
-
-建议使用文献管理工具（如 Zotero、Mendeley、EndNote 等）来收集和整理参考文献。这些工具可以帮助规范文献格式，避免手动输入的错误，并能方便地导出各种引用格式。
-
-\subsection{文献格式检查}
-
-在提交论文前，应仔细检查参考文献列表中每条文献的格式是否符合 GB/T 7714—2015 标准。特别注意以下检查项目：
-
-（1）作者姓名的缩写格式是否一致。
-
-（2）标题的大小写是否正确。
-
-（3）出版信息（出版地、出版者、年份）是否完整。
-
-（4）页码范围是否正确。
-
-（5）文献类型标识（[M]、[J]、[C] 等）是否正确。
+可以从 Zotero 等工具导出文本后整理成 SILE 内容。提交前检查作者、题名、文献类型、出版项、页码、网址与引用日期，并确保正文每个引文编号都能在列表中找到。
 
 \section{本章小结}
 
-本章介绍了参考文献的格式规范、正文引用方式、交叉引用方法以及参考文献的管理建议。正确使用参考文献是学术论文写作的基本要求，也是学术诚信的重要体现。
-
+高层图表命令把题注、编号和清单绑定在一起；三轮编译让页码收敛。参考文献则必须依照提交时有效的国家标准逐条核对。
 \end{document}

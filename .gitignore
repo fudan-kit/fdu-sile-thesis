@@ -1,0 +1,14 @@
+tmp/
+olds/
+/samples/
+/output/
+__pycache__/
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.xdv
+*.toc
+*.lof
+*.lot

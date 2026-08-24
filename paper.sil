@@ -1,94 +1,55 @@
-\begin[class=fduthesis, type=doctor, degree=academic]{document}
+\begin[class=fduthesis, type=master, degree=academic]{document}
 
-% =========================================================================
-% 论文元数据设置
-% =========================================================================
-
+% 论文元数据：请用自己的信息替换示例值。
 \fdu:schoolCode{10246}
 \fdu:studentId{12345678901}
-\fdu:title{复旦大学学位论文 SILE 排版模板使用指南}
-\fdu:titleEn{User Guide for Fudan University Thesis SILE Typesetting Template}
+\fdu:title{复旦大学学位论文 SILE 排版模板教程}
+\fdu:titleEn{A Tutorial for the Fudan University Thesis Template in SILE}
 \fdu:author{张三}
-\fdu:supervisor{李四 教授}
+\fdu:supervisor{李四　教授}
 \fdu:department{计算机科学技术学院}
 \fdu:major{计算机科学与技术}
 \fdu:date{2026年6月}
-\fdu:keywordsCn{SILE 排版系统，学位论文模板，复旦大学，中文排版，自动化排版}
-\fdu:keywordsEn{SILE Typesetting System, Thesis Template, Fudan University, Chinese Typesetting, Automated Typesetting}
+\fdu:keywordsCn{SILE；学位论文；复旦大学；中文排版；模板}
+\fdu:keywordsEn{SILE; thesis; Fudan University; Chinese typesetting; template}
 \fdu:clc{TP391}
 
-% 可选元数据设置（按需取消注释）
-% \fdu:tongdengxueli{true}       % 同等学力人员标记（非同等学力人员请勿设置）
-% \fdu:englishProject{true}      % 英文项目标记（非英文项目请勿设置）
-% \fdu:secretLevel{秘密}         % 涉密论文密级（公开论文请勿设置）
-% \fdu:secretYear{五年}          % 涉密论文保密年限
+% 涉密、同等学力或英文项目论文按需取消下一组命令的注释。
+% \fdu:secretLevel{秘密}
+% \fdu:secretYear{五年}
+% \fdu:tongdengxueli{true}
+% \fdu:englishProject{true}
 
-% 设置 PDF 文件元数据
 \fdu:pdfmetadata
-
-% =========================================================================
-% 封面
-% =========================================================================
-
 \fdu:makecover
 
-% =========================================================================
-% 前置部分（罗马数字页码）
-% =========================================================================
-
-\fdu:frontmatter
-
-% 扉页：指导小组成员名单
 \begin{fdu:instructors}
-
 李四　教授　　复旦大学计算机科学技术学院
 
 王五　教授　　复旦大学计算机科学技术学院
 
 赵六　副教授　复旦大学计算机科学技术学院
-
 \end{fdu:instructors}
 
-% 目录
+\fdu:frontmatter
+
 \tableofcontents
-
-% 中文摘要
 \include[src=src/abstract-cn.sil]
-
-% 英文摘要
 \include[src=src/abstract-en.sil]
-
-% =========================================================================
-% 正文部分（阿拉伯数字页码）
-% =========================================================================
+\fdu:listoffigures
+\fdu:listoftables
 
 \fdu:mainmatter
-
 \include[src=src/c01-introduction.sil]
 \include[src=src/c02-related-work.sil]
 \include[src=src/c03-method.sil]
 \include[src=src/c04-experiment.sil]
 \include[src=src/c05-conclusion.sil]
 
-% =========================================================================
-% 后置部分
-% =========================================================================
-
 \fdu:backmatter
-
-% 参考文献
 \include[src=src/bibliography.sil]
-
-% 附录
 \include[src=src/appendix.sil]
-
-% 致谢
 \include[src=src/acknowledgements.sil]
-
-% =========================================================================
-% 独创性声明和授权声明（末页）
-% =========================================================================
-
 \fdu:declaration
 
 \end{document}

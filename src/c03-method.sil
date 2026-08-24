@@ -1,177 +1,79 @@
 \begin{document}
+\chapter{论文元数据与结构}
 
-\chapter{图表排版示例}
+\section{文档类别}
 
-\section{图片插入}
+硕士学术学位论文使用 \fdu:code{type=master, degree=academic}，硕士专业学位论文把 degree 改为 professional；博士论文把 type 改为 doctor。类型直接决定封面上的“硕士学位论文”或“博士学位论文”以及括号内的学位类别。
 
-\subsection{基本图片插入}
+\section{元数据}
 
-SILE 通过 img 命令来插入图片。支持的图片格式包括 PDF、PNG、JPG 等常见格式。基本语法为指定图片的 src（源文件路径）和尺寸参数（width 或 height）。
+封面、摘要标题、页眉和 PDF 元数据都来自主文件开头的统一设置。一个典型片段如下：
 
-以下是本模板中封面校名图片的插入示例：
+\begin[type=verbatim]{raw}
+\fdu:studentId{12345678901}
+\fdu:title{中文论文题目}
+\fdu:titleEn{English Thesis Title}
+\fdu:author{学生姓名}
+\fdu:supervisor{导师姓名　职称}
+\fdu:department{培养单位}
+\fdu:major{学科专业}
+\fdu:date{2026年6月}
+\fdu:clc{TP391}
+\end{raw}
 
-\center{\img[src=fudan-name.pdf, height=40pt]}
+学校代码默认是 10246。公开论文不要填写 secretLevel；涉密论文可同时设置 \fdu:code{secretLevel} 和 \fdu:code{secretYear}，封面右上角将显示例如“密级：秘密★五年”。同等学力人员或英文项目只在适用时设置相应标记。
 
-上面的图片使用了 center 环境实现居中显示，并通过 height 参数控制图片高度为 40pt。
+\section{封面和前置部分}
 
-\subsection{图片尺寸控制}
+fdu:makecover 命令生成不带页眉页码的封面。封面字段与规范附件样本一致，包括中图分类号、学校代码、论文类别、中英文题名、学生姓名、学号、导师姓名与职称、学科专业、培养单位和提交日期。
 
-img 命令支持多种尺寸控制方式：
+fdu:frontmatter 命令将页码切换为小写罗马数字。随后依次放置指导小组、目录、中英文摘要及图表清单：
 
-（1）指定宽度：通过 width 参数设置图片宽度，高度按比例自动缩放。例如设置 width=100mm 表示图片宽度为 100 毫米。
+\begin[type=verbatim]{raw}
+\fdu:frontmatter
+\begin{fdu:instructors}
+导师姓名　职称　培养单位
+\end{fdu:instructors}
+\tableofcontents
+\include[src=src/abstract-cn.sil]
+\include[src=src/abstract-en.sil]
+\fdu:listoffigures
+\fdu:listoftables
+\end{raw}
 
-（2）指定高度：通过 height 参数设置图片高度，宽度按比例自动缩放。例如设置 height=50mm 表示图片高度为 50 毫米。
+指导小组页按规范不显示页码。摘要标题直接采用元数据中的论文题目，摘要正文左侧标“摘要：”或“Abstract:”，关键词放在末尾。关键词请在元数据中用分号分隔，并控制为 3 至 8 个。
 
-（3）同时指定宽度和高度：可以同时指定 width 和 height 参数，但可能导致图片宽高比变形，不推荐使用。
+\section{正文}
 
-建议只指定宽度或高度中的一个参数，让另一个参数自动按比例缩放，以保持图片的原始宽高比。
+fdu:mainmatter 命令让正文从右页开始并把页码重置为阿拉伯数字 1。每个 chapter 都另起一页，并生成“第1章”的章号；section 和 subsection 分别生成 1.1 与 1.1.1 形式的编号。
 
-\subsection{居中显示图片}
+\begin[type=verbatim]{raw}
+\fdu:mainmatter
+\chapter{绪论}
+\section{研究背景}
+\subsection{问题定义}
+\end{raw}
 
-在论文中，图片通常需要居中显示。将 img 命令放在 center 环境中即可实现居中效果：
+目录条目由章节命令自动记录。手工修改 \fdu:code{paper.toc} 没有意义，因为下一轮编译会覆盖它。
 
-\center{\img[src=fudan-name.pdf, height=30pt]}
+\section{后置部分}
 
-\subsection{图片标题格式}
+正文之后调用 fdu:backmatter，再放置参考文献、附录和致谢。最后调用 fdu:declaration，在同一页生成规范附件中的独创性声明与使用授权声明，该页不显示页眉页码。
 
-学术论文中的图片需要配有标题和编号。图片标题放在图片下方，格式为"图 X.Y 标题文字"，其中 X 为章节号，Y 为图片序号。标题居中排列，使用五号宋体。以下是标题格式示例：
+\begin[type=verbatim]{raw}
+\fdu:backmatter
+\include[src=src/bibliography.sil]
+\include[src=src/appendix.sil]
+\include[src=src/acknowledgements.sil]
+\fdu:declaration
+\end{raw}
 
-\center{\img[src=fudan-name.pdf, height=30pt]}
+\section{双面页面逻辑}
 
-\center{\font[family=SimSun, size=10.5pt]{图 3.1　复旦大学校名标识}}
+封面之后的前置部分连续排页；正文首页被推到奇数页，即装订后的右页。空白页不会显示页眉和页码。各章只要求另起页，不强制每章都从右页开始，这与规范文字相符，也避免无谓增加空白页。
 
-\section{表格排版}
-
-\subsection{简单数据展示}
-
-在学术论文中，表格是展示实验数据的重要方式。表格标题放在表格上方，格式为"表 X.Y 标题文字"。以下展示一个简单的数据展示格式：
-
-\center{\font[family=SimHei, size=10.5pt]{表 3.1　不同方法的性能比较}}
-
-\medskip
-
-\noindent\hrule[width=146.4mm, height=0.8pt]
-
-\smallskip
-
-\noindent\font[family=SimHei, size=10.5pt]{方法　　　　　准确率　　　　召回率　　　　F1 值}
-
-\smallskip
-
-\noindent\hrule[width=146.4mm, height=0.4pt]
-
-\smallskip
-
-\noindent\font[family=SimSun, size=10.5pt]{方法一　　　　92.5　　　　　88.3　　　　　90.4}
-
-\noindent\font[family=SimSun, size=10.5pt]{方法二　　　　90.1　　　　　91.2　　　　　90.6}
-
-\noindent\font[family=SimSun, size=10.5pt]{方法三　　　　93.8　　　　　87.5　　　　　90.5}
-
-\smallskip
-
-\noindent\hrule[width=146.4mm, height=0.8pt]
-
-\medskip
-
-上面的表格使用了三线表样式，即只保留顶线、底线和表头分隔线。这是学术论文中最常用的表格样式。通过 hrule 命令绘制水平线，线的粗细通过 height 参数控制。
-
-\subsection{多列数据表格}
-
-对于包含更多列的表格，可以通过调整全角空格的数量来对齐列数据：
-
-\center{\font[family=SimHei, size=10.5pt]{表 3.2　模型在不同数据集上的实验结果}}
-
-\medskip
-
-\noindent\hrule[width=146.4mm, height=0.8pt]
-
-\smallskip
-
-\noindent\font[family=SimHei, size=10.5pt]{模型　　　　　　数据集 A　　　数据集 B　　　数据集 C}
-
-\smallskip
-
-\noindent\hrule[width=146.4mm, height=0.4pt]
-
-\smallskip
-
-\noindent\font[family=SimSun, size=10.5pt]{基线模型　　　　85.2　　　　　82.7　　　　　88.1}
-
-\noindent\font[family=SimSun, size=10.5pt]{改进模型一　　　87.6　　　　　85.3　　　　　89.5}
-
-\noindent\font[family=SimSun, size=10.5pt]{改进模型二　　　89.1　　　　　86.8　　　　　91.2}
-
-\noindent\font[family=SimSun, size=10.5pt]{本文方法　　　　91.3　　　　　88.5　　　　　92.7}
-
-\smallskip
-
-\noindent\hrule[width=146.4mm, height=0.8pt]
-
-\section{图表引用格式}
-
-\subsection{图片引用}
-
-在正文中引用图片时，应使用"如图 X.Y 所示"的格式。例如："如图 3.1 所示，复旦大学校名标识采用了标准的设计规范。"
-
-\subsection{表格引用}
-
-引用表格时，应使用"如表 X.Y 所示"或"见表 X.Y"的格式。例如："从表 3.1 中可以看出，方法三在准确率方面表现最优。"
-
-\section{复杂排版示例}
-
-\subsection{图文说明}
-
-在论文中，有时需要在图片前后添加较详细的说明文字。以下展示了一个完整的图文排版示例：
-
-以下图片展示了复旦大学的校名标识，该标识广泛应用于学校的各类官方文件和出版物中。
-
-\bigskip
-
-\center{\img[src=fudan-name.pdf, height=50pt]}
-
-\center{\font[family=SimSun, size=10.5pt]{图 3.2　复旦大学校名标识（放大版）}}
-
-\medskip
-
-校名标识的设计体现了复旦大学的历史传统和文化底蕴。在学位论文的封面中，校名标识被放置在封面上方的居中位置。
-
-\subsection{多图展示}
-
-当需要展示多张图片进行比较时，可以在每张图片后添加子图标题：
-
-\center{\img[src=fudan-name.pdf, height=30pt]}
-
-\center{\font[family=SimSun, size=10.5pt]{（a）标准尺寸}}
-
-\bigskip
-
-\center{\img[src=fudan-name.pdf, height=50pt]}
-
-\center{\font[family=SimSun, size=10.5pt]{（b）放大尺寸}}
-
-\medskip
-
-\center{\font[family=SimSun, size=10.5pt]{图 3.3　不同尺寸的校名标识对比}}
-
-\section{排版建议}
-
-以下是一些图表排版的实用建议：
-
-（1）图片分辨率建议不低于 300 DPI，以确保打印质量。
-
-（2）尽量使用矢量格式（如 PDF）的图片，这样在任何缩放比例下都能保持清晰。
-
-（3）表格优先使用三线表样式，即只保留顶线、底线和表头分隔线。
-
-（4）图表编号应按章连续编号，如"图 3.1""表 3.2"等。
-
-（5）图片标题位于图片下方，表格标题位于表格上方。
-
-（6）所有图表都应在正文中被引用，不应出现未被引用的"孤立"图表。
-
+\pagebreak
 \section{本章小结}
 
-本章详细介绍了在 SILE 模板中进行图表排版的方法，包括图片插入与尺寸控制、三线表格式的构建、图表标题与引用格式，以及复杂排版技巧。通过这些方法，可以满足学位论文中大部分图表排版需求。
-
+主文件负责论文顺序和共享数据，分文件负责内容。使用模板命令而非手工摆放文字，才能使目录、页码和封面在修改后保持同步。
 \end{document}
